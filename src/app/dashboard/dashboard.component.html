@@ -1,0 +1,38 @@
+<!-- <div [@routerTransition]> -->
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="container-fluid">
+      <!-- <h3 class="b-w3ltxt text-capitalize mt-md-4"><span>Delicious & crispy</span> Recipes</h3> -->
+      <!-- <p class="w3ls_pvt-title my-3">{{empresa.portada}}</p> -->
+      <div [innerHTML]=empresa.portada></div>
+
+      <a [routerLink]="['about']" class="btn btn-banner my-sm-3 mb-3">Read More</a>
+      <a [routerLink]="['contact']" class="btn btn-banner1 my-sm-3 mb-3">Contact Us</a>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <!-- <app-loading [loading]= "loading"></app-loading> -->
+
+    <ngb-carousel>
+      <ng-template *ngFor="let sliderData of shareEmpresaService.slidersData" ngbSlide>
+        <!-- <img [src]="slider.imagePath" alt="Random first slide" class="img-fluid mx-auto d-block" width="100%" /> -->
+        <!-- <img [src]="slider.imgFileName" alt="Random first slide" class="img-fluid mx-auto d-block rounded" /> -->
+        <!-- <img src="{{host}}/api/empresa/uploads/img/{{slider.imgFileName}}"  -->
+        <img [src] =sliderData.imgFileData
+        alt="Random first slide" class="img-fluid mx-auto d-block rounded" />
+        <div class="carousel-caption">
+          <h5>{{ sliderData.label }}</h5>
+          <!-- <p>{{ slider.descripcion }}</p> -->
+        </div>
+      </ng-template>
+    </ngb-carousel>
+  </div>
+
+</div>
+<hr />
+
+<router-outlet></router-outlet>
+
+

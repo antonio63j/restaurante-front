@@ -1,0 +1,27 @@
+
+@import "../../../styles/mis-variables";
+
+
+.quote {
+    color: #8cc540;
+    font-style: italic;
+}
+
+.redText {
+    color: Red;
+    font-size: 12px;
+    font-family: Arial;
+}
+
+h1.titleText {
+    color: #69a8cf;
+    text-align: left;
+    margin-top: 40px;
+    font-weight: normal;
+}
+
+ 
+  ::ng-deep .my-long-panel {
+    background-color: $oxido-claro;
+    // max-height: 200px;
+  }
