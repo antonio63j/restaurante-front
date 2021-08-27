@@ -6,7 +6,6 @@
         </div>
     </footer> -->
 
-
     <footer class="py-5">
         <div class="container py-sm-3">
             <div class="row footer-grids">
@@ -14,21 +13,21 @@
                     <h4 class="mb-4"><span class="fa fa-cutlery"></span> {{empresa.nombre}}</h4>
                     <p class="mb-3">{{empresa.descripcionBreve}}</p>
                     <p class="mb-3">horario de {{empresa.horaApertura}} a {{empresa.horaCierre}}</p>
-                    <h5>regístrate y haz tu pedido <span>ON LINE</span> </h5>
+                    <p *ngIf="!authService.isAuthenticated()" class="mb-3"> <a [routerLink]="['/registro']"> regístrate y haz tu pedido </a><span>ON LINE</span> </p>
                 </div>
                 <div class="col-lg-3 col-sm-6 mb-md-0 mb-sm-5 mb-4">
-                    <h4 class="mb-4">Address Info</h4>
+                    <h4 class="mb-4">Contacto</h4>
                     <p><span class="fa mr-2 fa-map-marker"></span>{{empresa.direccion}}<span> {{empresa.provincia}}</span></p>
                     <p class="phone py-2"><span class="fa mr-2 fa-phone"></span> {{empresa.telefono}}</p>
-                    <p><span class="fa mr-2 fa-envelope"></span><a href="mailto:{{empresa.email}}">{{empresa.email}}</a></p>
+                    <p><span class="fa mr-2 fa-envelope"></span><a [routerLink]="['/contacto']">Envíanos un mensaje</a></p>
                 </div>
                 <div class="col-lg-2 col-sm-6 mb-lg-0 mb-sm-5 mb-4">
-                    <h4 class="mb-4">Quick Links</h4>
+                    <h4 class="mb-4">Enlaces rápidos</h4>
                     <ul>
-                        <li><a href="#">Order Online</a></li>
-                        <li class="my-2"><a href="#">Healthy Crispy</a></li>
-                        <li><a href="#">Support Helpline</a></li>
-                        <li class="mt-2"><a href="#">Privacy Ploicy</a></li>
+                        <li><a [routerLink]="['/store/carta']">Nuestra Carta</a></li>
+                        <li class="my-2"><a [routerLink]="['/store/menu']">Nuestro menú</a></li>
+                        <!-- <li><a href="#">Support Helpline</a></li>
+                        <li class="mt-2"><a href="#">Privacy Ploicy</a></li> -->
                     </ul>
                 </div>
                 <div class="col-lg-4 col-sm-6">

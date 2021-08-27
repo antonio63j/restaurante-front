@@ -21,9 +21,23 @@ subirFoto(archivo: File, id: number, sufijoController: string): Observable<HttpE
   formData.append('archivo', archivo);
   formData.append('id', id.toString());
 
+  console.log('contenido archivo:');
+  console.log(archivo);
+
+  console.log(`archivo foto = ${JSON.stringify(archivo)}`);
+  console.log(`formData para subir foto = ${JSON.stringify(formData)}`);
+  console.log(formData);
+
+  console.log(formData.get('archivo'));
+  console.log(formData.get('id'));
+
+  const options = { content: formData };
+
   const req = new HttpRequest('POST', `${environment.urlEndPoint}/${sufijoController}`, formData, {
     reportProgress: true
   });
+
+
 
   return this.http.request(req).pipe(
     catchError(err => {

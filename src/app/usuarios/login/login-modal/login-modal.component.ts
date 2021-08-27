@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { AuthService } from '../../auth.service';
 import { Usuario } from '../../../shared/modelos/usuario';
@@ -16,10 +16,11 @@ import { ShowErrorService } from 'src/app/shared/services/show-error.service';
   styleUrls: ['./login-modal.component.scss']
 })
 
-export class LoginModalComponent implements OnInit, OnDestroy {
+export class LoginModalComponent implements OnInit, OnDestroy, AfterViewInit {
   public usuario: Usuario = new Usuario();
   public titulo = 'Inicio de sesión';
   public hide = true;
+  @ViewChild ('emailCuenta') emailCuenta: ElementRef;
 
   constructor(
     public authService: AuthService,
@@ -32,6 +33,13 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit(): void {
+    Promise.resolve(null).then(() => this.emailCuenta.nativeElement.focus());
+    
+
   }
 
   login(): void {

@@ -22,7 +22,6 @@
     <div class="collapse navbar-collapse flex-column align-items-end" id="navbarCollapse">
       <!-- navbar1 -->
       <div class="navbar-nav mb-lg-0">
-        <!-- <h5><a href="#" style="margin-right: 10px"><i class="fa fa-envelope" aria-hidden="true"></i>info@cazuela-cortubi.es</a></h5> -->
         <h5><a href="#" style="margin-right: 10px">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             {{empresa.direccion}} {{empresa.provincia}}
@@ -57,7 +56,9 @@
           </a>
 
           <div class="dropdown-menu-right" ngbDropdownMenu>
-            <a *ngIf="authService.hasRole('ROLE_ADMIN')" class="dropdown-item" [routerLink]="['/perfil']">
+            <!-- <a *ngIf="authService.hasRole('ROLE_ADMIN')" class="dropdown-item" [routerLink]="['/perfil']"> -->
+            <a *ngIf="authService.isAuthenticated()" class="dropdown-item" [routerLink]="['/perfil']">
+
               <i class="fa fa-fw fa-user"></i> 
               <b>{{ 'Profile' | translate }}</b>
             </a>
@@ -75,7 +76,7 @@
               <i class="fa fa-fw fa-power-off"></i> {{ 'Log In' | translate }}
             </a>
             <a *ngIf="!authService.usuario.username" [routerLink]="['/registro']" class="dropdown-item">
-              <i class="fa fa-fw fa-power-off"></i> {{ 'Sing Up' | translate }}
+              <i class="fa fa-fw fa-power-off"></i> {{ 'Sign Up' | translate }}
             </a>
           </div>
         </li>

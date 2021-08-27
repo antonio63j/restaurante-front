@@ -100,7 +100,7 @@
               </div>
             </div>
             <br>
-            <mat-label style="font-size: 16px;">Direcciones</mat-label> 
+            <mat-label style="font-size: 16px;">Direcciones (Solo para entrega de pedidos)</mat-label> 
             <div class="row table-responsive" style="text-align: center;">
               <table class="table table-bordered table-striped" *ngIf="usuario.direcciones?.length>0">
                 <thead>
@@ -160,7 +160,7 @@
         <div class="card-footer grupo-botones">
           <button mat-raised-button class="margin-right" color="primary" (click)='update(usuario)'
             [disabled]="!variableForm.form.valid">Actualizar</button>
-          <button mat-raised-button class="margin-right" color="primary" (click)="cancelar()">Cancelar</button>
+          <button mat-raised-button class="margin-right" color="primary" (click)="salir()">Salir</button>
         </div>
       </div>
 

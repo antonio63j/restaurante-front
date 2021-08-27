@@ -16,6 +16,8 @@ const routes: Routes = [
 
           { path: 'perfil', loadChildren: () => import ('../usuarios/perfil/perfil.module').then ((m) => m.PerfilModule)},
 
+          { path: 'contacto', loadChildren: () => import('../pages-store/contacto/contacto.module').then((m) => m.ContactoModule)},
+
           { path: 'admin-index',  canActivate: [RoleGuard], data: {role: 'ROLE_ADMIN'},
             loadChildren: () => import('../pages-admin/pages-admin.module').then((m) => m.PagesAdminModule) },
           { path: 'store',

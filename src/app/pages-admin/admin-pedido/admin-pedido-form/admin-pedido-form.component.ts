@@ -102,6 +102,9 @@ export class AdminPedidoFormComponent implements OnInit, OnDestroy {
           if (response == null) {
           } else {
             this.pedido = response.data;
+            this.calculosPedido(this.pedido);
+            console.log(`pedido actualizado=${JSON.stringify(this.pedido)}`);
+
           }
         }
         , err => this.showErrorService.httpErrorResponse(err, 'Cambio estado de pedido', '', 'error')

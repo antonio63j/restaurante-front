@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           console.log('recibido cambio datos empresa');
           this.empresa = msg;
         });
+      window.scrollTo(0, 0);  
     }
 
     ngOnDestroy(): void {

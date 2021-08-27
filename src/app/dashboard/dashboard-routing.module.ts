@@ -13,10 +13,7 @@ const routes: Routes = [
             },
             {
               path: 'registro', loadChildren: () => import('../usuarios/signup/signup.module').then((m) => m.SignupModule)
-            },
-            // {
-            //   path: 'perfil', loadChildren: () => import('../usuarios/perfil/perfil.module').then((m) => m.PerfilModule)
-            // }
+            }
 
         ],
 

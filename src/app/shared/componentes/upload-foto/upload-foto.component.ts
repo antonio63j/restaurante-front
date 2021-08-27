@@ -38,8 +38,16 @@ export class UploadFotoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  selecionarFoto(event): void {
-    this.nombreArchivoFoto = event.target.files[0];
+  selecionarFoto($event): void {
+
+    console.log(JSON.stringify($event));
+    
+    this.nombreArchivoFoto = $event.target.files[0];
+
+    console.log(`nombre foto: ${this.nombreArchivoFoto.name}`);
+    console.log('contenido nombreArchivoFoto:');
+    console.log(this.nombreArchivoFoto);
+
     this.progreso = 0;
 
     if (this.nombreArchivoFoto.type.indexOf('image') < 0 ) {
@@ -49,6 +57,9 @@ export class UploadFotoComponent implements OnInit, OnDestroy {
   }
 
   subirFoto(): void {
+
+    console.log(`subiendo foto ${JSON.stringify(this.nombreArchivoFoto)}`);
+    console.log(this.nombreArchivoFoto);
 
     if (this.nombreArchivoFoto) {
       this.observ$ = this.uploadFotoService.subirFoto(this.nombreArchivoFoto, this.id, this.sufijoController)

@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/dashboard']);
-      swal.fire('Aviso', `Ya estás autenticado! ${this.authService.usuario.username}`, 'info');
+      // swal.fire('Aviso', `Ya estás autenticado! ${this.authService.usuario.username}`, 'info');
     } else {
       this.subscripcioneventoCerrarModalScrollable();
       this.crearModalLogin();

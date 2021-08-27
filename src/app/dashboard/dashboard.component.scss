@@ -64,16 +64,16 @@ h3.b-w3ltxt {
 }
 
 .btn-banner,.btn-banner1 {
-    background: #333;
+    background: $oxido;
     border-radius: 0px;
-    color: #fff;
+    color: white;
     font-size: 15px;
     letter-spacing: 1px;
     padding: 10px 25px;
      display: inline-block;
 }
 .btn-banner1 {
-    background: #f85a40;
+    background: $oxido;
 }
 .btn-banner:hover,.btn-banner1:hover{
     color: #fff;

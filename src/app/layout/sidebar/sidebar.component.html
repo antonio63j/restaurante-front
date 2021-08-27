@@ -2,14 +2,6 @@
 <nav [ngClass]="{ sidebarPushRight: isActive }" class="sidebar" >
 
   <div class="list-group">
-    <!-- <a [routerLinkActive]="['router-link-active']" class="list-group-item" routerLink="/clientes">
-      <i class="fa fa-fw fa-eur"></i>&nbsp;
-      <span>{{ 'Customers' | translate }}</span>
-    </a>
-    <a [routerLinkActive]="['router-link-active']" class="list-group-item" routerLink="/clientes">
-      <i class="fa fa-fw fa-eur"></i>&nbsp;
-      <span>{{ 'Customers' | translate }}</span>
-    </a> -->
 
     <div class="header-fields">
       <a [routerLink]="['/dashboard']" class="list-group-item">
@@ -60,7 +52,7 @@
             </li>
             <li>
               <a *ngIf="!authService.usuario.username" [routerLink]="['/registro']" class="dropdown-item">
-                <i class="fa fa-fw fa-power-off"></i> {{ 'Sing Up' | translate }}
+                <i class="fa fa-fw fa-power-off"></i> {{ 'Sign Up' | translate }}
               </a>
             </li>
           </ul>

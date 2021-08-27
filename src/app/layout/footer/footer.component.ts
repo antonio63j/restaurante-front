@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ShareEmpresaService } from '../../shared/services/share-empresa.service';
 import { Empresa } from '../../shared/modelos/empresa';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/usuarios/auth.service';
 
 @Component({
   selector: 'app-footer',
@@ -14,7 +15,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
 
   constructor(
-    public shareEmpresaService: ShareEmpresaService) {
+    public shareEmpresaService: ShareEmpresaService,
+    public  authService: AuthService) {
 
   }
 

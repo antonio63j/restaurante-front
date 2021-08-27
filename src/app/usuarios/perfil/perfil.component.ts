@@ -81,6 +81,7 @@ export class PerfilComponent implements OnInit {
       .subscribe(
         json => {
           this.usuario = json.usuario;
+          swal.fire('Perfil actualizado', '', 'success');
         }
         , err => {
           if (err.status === 400) {
@@ -118,7 +119,7 @@ export class PerfilComponent implements OnInit {
     this.updateUsuario(usuario);
   }
 
-  cancelar(): void {
+  salir(): void {
     this.location.back();
   }
 

@@ -193,7 +193,7 @@ export class EmpresaComponent implements OnInit, OnDestroy {
       );
   }
 
-  cancelar(): void {
+  salir(): void {
     this.location.back();
   }
 

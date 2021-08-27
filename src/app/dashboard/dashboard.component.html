@@ -1,16 +1,7 @@
 <!-- <div [@routerTransition]> -->
 
 <div class="row">
-  <div class="col-md-4">
-    <div class="container-fluid">
-      <!-- <h3 class="b-w3ltxt text-capitalize mt-md-4"><span>Delicious & crispy</span> Recipes</h3> -->
-      <!-- <p class="w3ls_pvt-title my-3">{{empresa.portada}}</p> -->
-      <div [innerHTML]=empresa.portada></div>
 
-      <a [routerLink]="['about']" class="btn btn-banner my-sm-3 mb-3">Read More</a>
-      <a [routerLink]="['contact']" class="btn btn-banner1 my-sm-3 mb-3">Contact Us</a>
-    </div>
-  </div>
 
   <div class="col-md-8">
     <!-- <app-loading [loading]= "loading"></app-loading> -->
@@ -28,6 +19,15 @@
         </div>
       </ng-template>
     </ngb-carousel>
+  </div>
+
+  <div class="col-md-4">
+    <div class="container-fluid">
+
+      <div [innerHTML]=empresa.portada></div>
+
+      <a [routerLink]="['/contacto']" class="btn btn-banner1 my-sm-3 mb-3">Contacte con nosotros</a>
+    </div>
   </div>
 
 </div>

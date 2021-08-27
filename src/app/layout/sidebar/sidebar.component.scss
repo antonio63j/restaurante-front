@@ -1,6 +1,10 @@
 @import '../../../styles/mis-variables';
 
 .sidebar {
+
+    max-height: 280px;
+    scrollbar-color: red yellow;
+
     border-radius: 0;
     position: fixed;
     z-index: 1000;
@@ -11,7 +15,7 @@
     margin-bottom: 48px;
     border: none;
     border-radius: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
     background-color: #343a40;
     bottom: auto;
     overflow-x: hidden;
@@ -24,6 +28,7 @@
     transition: all 0.2s ease-in-out;
     // border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
+
         a.list-group-item {
             background:#343a40;
             border: 0;
@@ -230,4 +235,21 @@
     span {
         display: none;
     }
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 18px;     /* Tamaño del scroll en vertical */
+    height: 0px;    /* Tamaño del scroll en horizontal */
+    display: inline;  /* Ocultar scroll */
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+.sidebar::-webkit-scrollbar-track:hover,
+.sidebar::-webkit-scrollbar-track:active {
+  background: $oxido;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #c5c0c0;
+    border-radius: 4px;
 }

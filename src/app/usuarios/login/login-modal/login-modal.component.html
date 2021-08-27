@@ -12,7 +12,7 @@
 
         <mat-form-field class="example-full-width">
           <mat-label>Cuenta de correo</mat-label>
-          <input matInput class="form-control" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" id="email"
+          <input matInput #emailCuenta class="form-control" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" id="email"
             name="email" placeholder="cuenta@ejemplo.es" [(ngModel)]="usuario.username" #email="ngModel" minlength="5"
             maxlength="40" required>
           <mat-error *ngIf="email.hasError('required')">

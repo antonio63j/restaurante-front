@@ -1,5 +1,5 @@
 # Creación del proyecto
-npx -p angular/cli ng new cazuela-cortubi-front --style=scss
+npx -p angular/cli ng new restaurante-front --style=scss
 
 Queda instalada la versión Angular CLI version 11.0.2
 
