@@ -53,5 +53,15 @@
     "CV Download": "Descarga CV",
     "Show Projects": "Ver Proyectos",
     "Edit Customer": "Editar Cliente",
-    "Show Customer": "Ver Cliente"
+    "Show Customer": "Ver Cliente",
+	
+	"cookie": {
+        "header": "Cookies utilizadas en la web!",
+        "message": "Únicamente utilizamos cookies propias con finalidad técnica, no se recaba ni cede datos de carácter personal de los usuarios a terceros.",
+        "dismiss": "Entendido!",
+        "allow": "Permitir cookies",
+        "deny": "Ocultar",
+        "link": "Ver más",
+        "policy": "Política de cookies"
+    }
 }

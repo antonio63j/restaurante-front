@@ -4,6 +4,7 @@ import { Usuario } from '../shared/modelos/usuario';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
+import { CifradoService } from './cifrado.service';
 
 @Injectable()
 
@@ -12,13 +13,19 @@ export class AuthService {
   private _usuario: Usuario;
   private _token: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private cifradoService: CifradoService
+    ) { }
 
   public get usuario(): Usuario {
     if (this._usuario != null) {
       return this._usuario;
     } else if (this._usuario == null && sessionStorage.getItem('usuario')) {
-        return JSON.parse(sessionStorage.getItem('usuario')) as Usuario;
+        // return JSON.parse(sessionStorage.getItem('usuario')) as Usuario;
+        return (this.cifradoService.descifrarObjeto(sessionStorage.getItem('usuario'))) as Usuario;
+
+
     }
     return new Usuario();
   }
@@ -63,7 +70,9 @@ export class AuthService {
     // this._usuario.email = payload.email_usuario;
     this._usuario.username = payload.user_name;
     this._usuario.roles = payload.authorities;
-    sessionStorage.setItem ('usuario', JSON.stringify(this._usuario));
+
+    // sessionStorage.setItem ('usuario', JSON.stringify(this._usuario));
+    sessionStorage.setItem ('usuario', this.cifradoService.cifrarObjeto(this._usuario));
    }
 
   public guardarToken(accessToken: string): void {

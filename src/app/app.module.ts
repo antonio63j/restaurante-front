@@ -26,6 +26,8 @@ import { PaginatorComponent } from './shared/componentes/paginator/paginator.com
 import { CustomDateAdapter } from './shared/adapters/custom-date-adapter';
 import { DatePipe } from '@angular/common';
 
+import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
+import { environment } from 'src/environments/environment';
 
 export const MY_FORMATS = {
   parse: {
@@ -37,6 +39,48 @@ export const MY_FORMATS = {
     dateA11yLabel: 'DD/MM/YYYY',
     monthYearA11yLabel: 'MM YYYY',
   },
+};
+
+const cookieConfig: NgcCookieConsentConfig = {
+  cookie: {
+    domain: environment.domain // it is recommended to set your domain, for cookies to work properly
+  },
+  palette: {
+    popup: {
+      background: '#D67124'
+    },
+    button: {
+      background: '#D67124'
+    }
+  },
+  theme: 'classic',
+  position: 'bottom-right',
+  type: 'opt-out',
+  layout: 'basic-close',
+  layouts: {
+    'my-custom-layout': '{{messagelink}}{{compliance}}'
+  },
+  elements: {
+    messagelink: `
+    <span id="cookieconsent:desc" class="cc-message">{{message}}
+      <a aria-label="learn more about cookies" tabindex="0" class="cc-link" href="{{cookiePolicyHref}}" target="_blank">{{cookiePolicyLink}}</a>, 
+      <a aria-label="learn more about our privacy policy" tabindex="1" class="cc-link" href="{{privacyPolicyHref}}" target="_blank">{{privacyPolicyLink}}</a> y 
+      <a aria-label="learn more about our terms of service" tabindex="2" class="cc-link" href="{{tosHref}}" target="_blank">{{tosLink}}</a>
+    </span>
+    `,
+  },
+  content: {
+    message: 'By using our site, you acknowledge that you have read and understand our ',
+
+    cookiePolicyLink: 'Política de cookies',
+    cookiePolicyHref: environment.urlEndPoint + '/api/politica-cookies',
+
+    privacyPolicyLink: 'Política de privacidad',
+    privacyPolicyHref: environment.urlEndPoint + '/api/politica-cookies',
+
+    tosLink: 'Términos del servicio',
+    tosHref: environment.urlEndPoint + '/api/politica-cookies',
+  }
 };
 
 @NgModule({
@@ -58,6 +102,7 @@ export const MY_FORMATS = {
     MatSelectModule,  // en otro modulo lazy da error al utilizar mat-select
     MatNativeDateModule,
 
+    NgcCookieConsentModule.forRoot(cookieConfig)
   ],
 
   exports: [
