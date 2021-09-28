@@ -24,7 +24,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       private modalService: ModalService,
       private modalConModeloService: ModalConModeloService,
       public authService: AuthService)
-      // private location: Location)
+
       { }
 
     ngOnInit(): void {

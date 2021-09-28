@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { Usuario } from 'src/app/shared/modelos/usuario';
 
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 
 import swal from 'sweetalert2';
 import { ShowErrorService } from 'src/app/shared/services/show-error.service';
@@ -33,10 +33,11 @@ export class ContactoComponent implements OnInit {
     private contactoService: ContactoService,
     public  authService: AuthService,
     private location: Location,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
 
   ) {
-    
+
   }
 
   ngOnInit(): void {
@@ -46,7 +47,9 @@ export class ContactoComponent implements OnInit {
       this.emailContactoCliente.email = this.usuario.username;
     } else {
       }
-    window.scrollTo(0, 0);
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
+    }
   }
 
   enviar(emailContactoCliente: EmailContactoCliente): void {
@@ -70,7 +73,9 @@ export class ContactoComponent implements OnInit {
     }
 
   salir(): void {
-    this.location.back();
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { routerTransition } from '../../router.animations';
 import { Subject, Subscription } from 'rxjs';
@@ -22,6 +22,7 @@ import { ShareEmpresaService } from 'src/app/shared/services/share-empresa.servi
 import { FiltroSugerencia } from 'src/app/shared/modelos/filtro-sugerencia';
 import { HttpParams } from '@angular/common/http';
 import { ShowErrorService } from 'src/app/shared/services/show-error.service';
+import { isPlatformBrowser } from '@angular/common';
 
 const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -62,9 +63,8 @@ export class AdminSugerenciaComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private translate: TranslateService,
         private authService: AuthService,
-        private showErrorService: ShowErrorService
-        // public disableDirective: DisableDirective
-
+        private showErrorService: ShowErrorService,
+        @Inject(PLATFORM_ID) private platformId: string
     ) {
         this.sugerencias = [];
         this.tipoPlatos = this.shareEmpresaService.getIipoplatosInMem();
@@ -114,7 +114,9 @@ export class AdminSugerenciaComponent implements OnInit, OnDestroy {
                 response => {
                     this.sugerencias = response.content as Sugerencia[];
                     this.paginador = response;
-                    window.scrollTo(0, 0);
+                    if (isPlatformBrowser(this.platformId)) {
+                       window.scrollTo(0, 0);
+                    }
                 },
                 err => {this.showErrorService.httpErrorResponse(err, 'Error carga sugerencias', '', 'error');
                 }

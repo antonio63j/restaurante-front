@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { AuthService } from '../../auth.service';
 import { Usuario } from '../../../shared/modelos/usuario';
 import swal from 'sweetalert2';
@@ -29,7 +29,9 @@ export class LoginModalComponent implements OnInit, OnDestroy, AfterViewInit {
     private location: Location,
     private router: Router,
     private carritoService: CarritoService,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
+
   ) { }
 
   ngOnInit(): void {
@@ -78,7 +80,9 @@ export class LoginModalComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.authService.hasRole('ROLE_ADMIN')) {
       this.router.navigate(['\admin-index']);
     } else {
-      this.location.back();
+      if (isPlatformBrowser(this.platformId)) {
+        this.location.back();
+      }
     }
   }
 }

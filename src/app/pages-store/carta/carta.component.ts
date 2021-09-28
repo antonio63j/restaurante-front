@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
@@ -20,6 +20,11 @@ import swal from 'sweetalert2';
 import { CartaDetalleComponent } from './carta-detalle/carta-detalle.component';
 import { CarritoService } from '../carrito/carrito.service';
 import { ShowErrorService } from 'src/app/shared/services/show-error.service';
+import { isPlatformBrowser } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
+import { Empresa } from 'src/app/shared/modelos/empresa';
+import { AdminTipoplatoService } from 'src/app/pages-admin/admin-tipoplato/admin-tipoplato.service';
+import { EmpresaService } from 'src/app/pages-admin/empresa/empresa.service';
 
 const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -50,6 +55,7 @@ export class CartaComponent implements OnInit, OnDestroy {
     public paginador: any;
 
     public tipoPlatos: Tipoplato[];
+    public empresa: Empresa;
 
     public filterChecked = false;
     public filtroSugerencia: FiltroSugerencia = new FiltroSugerencia();
@@ -70,12 +76,18 @@ export class CartaComponent implements OnInit, OnDestroy {
         private translate: TranslateService,
         private authService: AuthService,
         private carritoService: CarritoService,
-        private showErrorService: ShowErrorService
+        private showErrorService: ShowErrorService,
+        @Inject(PLATFORM_ID) private platformId: string,
+        private titleService: Title,
+        private metaTagService: Meta,
+        private tipoplatoService: AdminTipoplatoService,
+        private empresaService: EmpresaService
 
     ) {
         this.filtroSugerencia.setSoloVisibles();
         this.sugerencias = [];
         this.tipoPlatos = this.shareEmpresaService.getIipoplatosInMem();
+        this.empresa = this.shareEmpresaService.copiaEmpresa();
 
         this.opcionesPlatos = [{ value: null, viewValue: 'sin filtro' }].concat(this.tipoPlatos.map(item => ({
             value: item.nombre, viewValue: item.nombre
@@ -161,13 +173,62 @@ export class CartaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.datosTitleAndMetaTags();
+
         this.nuevaPagina(0);
         this.subscripcioneventoCerrarModalScrollable();
 
-        // Suponemos que el servicio es singleton por lo que no hay que 
-        // invocar a cargaCarrito()
-        // this.carritoService.cargaCarrito();
     }
+
+    datosTitleAndMetaTags(): void{
+
+        if (this.tipoPlatos.length === 0) {
+          this.cargaTipoPlatos();
+        } else if (this.empresa === undefined) {
+                 this.cargaEmpresa(1);
+               } else {
+                   this.updateTitleAndMetaTags();
+               }
+    }
+
+    updateTitleAndMetaTags(): void{
+        const tPlatos = Array.prototype.map.call(this.tipoPlatos, s => s.nombre).toString();
+
+        this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) te presenta su carta`);
+        this.metaTagService.updateTag({name: 'description', content: `Grupo de platos de nuestra carta: ${tPlatos}`});
+    }
+
+      cargaTipoPlatos(): void {
+        this.tipoplatoService.getTipoplatos().pipe(
+            takeUntil(this.unsubscribe$),
+          ).subscribe (
+            response => {
+              this.tipoPlatos = (response as Tipoplato[]);
+              if (this.empresa === undefined) {
+                  this.cargaEmpresa(1);
+              } else {
+                  this.updateTitleAndMetaTags();
+              }
+            },
+            err => {this.showErrorService.httpErrorResponse(err, 'Error en carga tipos platos', '', 'error');
+            }
+          );
+      }
+
+    cargaEmpresa(id: number): void {
+        this.empresaService.get(id).pipe(
+            takeUntil(this.unsubscribe$)
+          )
+            .subscribe(
+              json => {
+                this.empresa = json;
+                this.updateTitleAndMetaTags();
+              }
+              , err => this.showErrorService.httpErrorResponse(err, 'Error carga datos empresa', '', 'error')
+
+            );
+    }
+
 
     // Es llamado por el paginator
     public getPagina(paginaYSize: any): void {
@@ -179,6 +240,9 @@ export class CartaComponent implements OnInit, OnDestroy {
 
     nuevaPagina(pagina: number): void {
         this.filtroSugerencia.page = pagina.toString();
+
+        console.log('filtroSugerencia:');
+        console.log(JSON.stringify(this.filtroSugerencia));
 
         // test
         if (!this.filterChecked) {
@@ -197,7 +261,9 @@ export class CartaComponent implements OnInit, OnDestroy {
                 response => {
                     this.sugerencias = response.content as Sugerencia[];
                     this.paginador = response;
-                    window.scrollTo(0, 0);
+                    if (isPlatformBrowser(this.platformId)) {
+                        window.scrollTo(0, 0);
+                    }
                 },
                 err => {this.showErrorService.httpErrorResponse(err, 'Error carga sugerencias', '', 'error');
                 }

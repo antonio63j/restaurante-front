@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/services/modal.service';
 import { AuthService } from '../../auth.service';
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import swal from 'sweetalert2';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
@@ -30,7 +30,9 @@ export class SignupModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private translate: TranslateService,
     private location: Location,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
+
 
   ) { }
 
@@ -60,7 +62,9 @@ export class SignupModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.location.back();
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { Direccion } from 'src/app/shared/modelos/direccion';
@@ -7,7 +7,7 @@ import { ModalConModeloService } from 'src/app/shared/services/modal-con-modelo.
 import { AuthService } from '../auth.service';
 import { DireccionFormComponent } from './direccion-form/direccion-form.component';
 import { PerfilService } from './perfil.service';
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 
 import swal from 'sweetalert2';
 import { ShowErrorService } from 'src/app/shared/services/show-error.service';
@@ -36,7 +36,8 @@ export class PerfilComponent implements OnInit {
     private authService: AuthService,
     private perfilService: PerfilService,
     private location: Location,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
 
   ) {
   }
@@ -120,7 +121,9 @@ export class PerfilComponent implements OnInit {
   }
 
   salir(): void {
-    this.location.back();
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
   }
 
   public openModal(direccion: Direccion): void {

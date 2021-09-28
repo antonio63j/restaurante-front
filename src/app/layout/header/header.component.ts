@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../usuarios/auth.service';
@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Empresa } from '../../shared/modelos/empresa';
 import { ShareEmpresaService } from '../../shared/services/share-empresa.service';
 import { CarritoService } from '../../pages-store/carrito/carrito.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'app-header',
@@ -39,7 +40,10 @@ export class HeaderComponent implements OnInit, OnDestroy{
         public router: Router,
         public authService: AuthService,
         public shareEmpresaService: ShareEmpresaService,
-        public carritoService: CarritoService
+        public carritoService: CarritoService,
+        @Inject(PLATFORM_ID) private platformId: string
+
+
     ) {
         this.router.events.subscribe((val) => {
             // console.log('en gestion router.events');
@@ -47,7 +51,9 @@ export class HeaderComponent implements OnInit, OnDestroy{
             // console.log(window.innerWidth);
             // console.log(this.isToggled());
 
-            if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
+            if (val instanceof NavigationEnd &&
+                isPlatformBrowser(this.platformId) &&
+                window.innerWidth <= 992 && this.isToggled()) {
                 console.log('se invoca toggleSidebar()');
                 this.toggleSidebar();
             }
@@ -77,18 +83,24 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
 
     isToggled(): boolean {
-        const dom: Element = document.querySelector('body');
-        return dom.classList.contains(this.pushRightClass);
+        if (isPlatformBrowser(this.platformId)) {
+            const dom: Element = document.querySelector('body');
+            return dom.classList.contains(this.pushRightClass);
+        }
     }
 
     toggleSidebar(): void {
-        const dom: any = document.querySelector('body');
-        dom.classList.toggle(this.pushRightClass);
+        if (isPlatformBrowser(this.platformId)) {
+            const dom: any = document.querySelector('body');
+            dom.classList.toggle(this.pushRightClass);
+        }
     }
 
     rltAndLtr(): void {
-        const dom: any = document.querySelector('body');
-        dom.classList.toggle('rtl');
+        if (isPlatformBrowser(this.platformId)) {
+            const dom: any = document.querySelector('body');
+            dom.classList.toggle('rtl');
+        }
     }
 
     onLoggedout(): void {

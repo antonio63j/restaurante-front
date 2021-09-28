@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { FiltroSugerencia, OrdenMenuSugerencia } from 'src/app/shared/modelos/filtro-sugerencia';
 import { Menu } from 'src/app/shared/modelos/menu';
 import { MenuSugerencia } from 'src/app/shared/modelos/menu-sugerencia';
@@ -70,7 +70,9 @@ export class AdminMenuSugerenciaComponent implements OnInit, OnDestroy {
     private menuService: AdminMenuService,
     private sugerenciaService: AdminSugerenciaService,
     private shareEmpresaService: ShareEmpresaService,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
+
 
   ) {
     this.tipoPlatos = this.shareEmpresaService.getIipoplatosInMem();
@@ -149,7 +151,9 @@ export class AdminMenuSugerenciaComponent implements OnInit, OnDestroy {
 
 
   public salir(): void {
-    this.location.back();
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
   }
 
   public sortChangeColumnMS(colName: string): void {
@@ -257,7 +261,9 @@ export class AdminMenuSugerenciaComponent implements OnInit, OnDestroy {
         response => {
           this.sugerencias = response.content as Sugerencia[];
           this.paginador = response;
-          window.scrollTo(0, 0);
+          if (isPlatformBrowser(this.platformId)) {
+            window.scrollTo(0, 0);
+          }
         },
         err => {this.showErrorService.httpErrorResponse(err, 'Error carga sugerencias', '', 'error');
         }

@@ -14,6 +14,11 @@ import { AuthService } from '../../usuarios/auth.service';
 import { Menu } from 'src/app/shared/modelos/menu';
 import { MenuDetalleComponent } from './menu-detalle/menu-detalle.component';
 import { ShowErrorService } from 'src/app/shared/services/show-error.service';
+import { Meta, Title } from '@angular/platform-browser';
+import { Empresa } from 'src/app/shared/modelos/empresa';
+import { ShareEmpresaService } from 'src/app/shared/services/share-empresa.service';
+import { AdminTipoplatoService } from 'src/app/pages-admin/admin-tipoplato/admin-tipoplato.service';
+import { EmpresaService } from 'src/app/pages-admin/empresa/empresa.service';
 
 const swalWithBootstrapButtons = swal.mixin({
   customClass: {
@@ -40,18 +45,46 @@ export class MenuComponent implements OnInit, OnDestroy{
   host: string = environment.urlEndPoint;
   public menuvacio: Menu = new Menu();
 
+  public empresa: Empresa;
+
   constructor(
     private menuService: AdminMenuService,
     private modalService: ModalService,
     private modalConModeloService: ModalConModeloService,
     public authService: AuthService,
     private router: Router,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    private shareEmpresaService: ShareEmpresaService,
+    private titleService: Title,
+    private metaTagService: Meta,
+    private tipoplatoService: AdminTipoplatoService,
+    private empresaService: EmpresaService
+
   ) {
+    this.empresa = this.shareEmpresaService.copiaEmpresa();
+
   }
 
   ngOnInit(): void {
     this.subcripcionMenus();
+  }
+
+  cargaEmpresa(id: number): void {
+    this.empresaService.get(id).pipe(
+        takeUntil(this.unsubscribe$)
+      )
+        .subscribe(
+          json => {
+            this.empresa = json;
+
+            console.log('empresa=');
+            console.log(this.empresa.nombre);
+
+            this.updateTitleAndMetaTags();
+          }
+          , err => this.showErrorService.httpErrorResponse(err, 'Error carga datos empresa', '', 'error')
+
+        );
   }
 
   subcripcionMenus(): void {
@@ -62,10 +95,23 @@ export class MenuComponent implements OnInit, OnDestroy{
     ).subscribe(
       response => {
         this.menus = (response as Menu[]);
+        if (this.empresa === undefined) {
+          this.cargaEmpresa(1);
+        } else {
+          this.updateTitleAndMetaTags();
+        }
+
       }
       , err => {this.showErrorService.httpErrorResponse(err, 'Error carga de menus', '', 'error');
       }
     );
+  }
+
+  updateTitleAndMetaTags(): void{
+    const menus = Array.prototype.map.call(this.menus, s => s.label).toString();
+
+    this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) te presenta su menu`);
+    this.metaTagService.updateTag({name: 'description', content: `Opciones de nuestro menú: ${menus}`});
   }
 
   public comprar(menu: Menu): void {

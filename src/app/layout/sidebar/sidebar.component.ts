@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../usuarios/auth.service';
 import { CarritoService } from 'src/app/pages-store/carrito/carrito.service';
+import { isPlatformBrowser } from '@angular/common';
 
 interface SubMenu {
     routLink: string;
@@ -45,11 +46,15 @@ export class SidebarComponent implements OnInit {
     private translate: TranslateService,
     public router: Router,
     public authService: AuthService,
-    public carritoService: CarritoService
+    public carritoService: CarritoService,
+    @Inject(PLATFORM_ID) private platformId: string
+
 
   ) {
     this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
+      if (val instanceof NavigationEnd &&
+        isPlatformBrowser(this.platformId) &&
+        window.innerWidth <= 992 && this.isToggled()) {
         this.toggleSidebar();
       }
     });
@@ -86,18 +91,26 @@ export class SidebarComponent implements OnInit {
     // }
 
     isToggled(): boolean {
+      if (isPlatformBrowser(this.platformId)) {
         const dom: Element = document.querySelector('body');
         return dom.classList.contains(this.pushRightClass);
+      }
     }
 
     toggleSidebar(): void {
+      if (isPlatformBrowser(this.platformId)) {
+
         const dom: any = document.querySelector('body');
         dom.classList.toggle(this.pushRightClass);
+      }
     }
 
     rltAndLtr(): void {
+      if (isPlatformBrowser(this.platformId)) {
+
         const dom: any = document.querySelector('body');
         dom.classList.toggle('rtl');
+      }
     }
 
     changeLang(language: string): void {

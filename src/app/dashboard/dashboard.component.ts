@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { Slider } from '../shared/modelos/slider';
@@ -8,6 +8,8 @@ import swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { ShareEmpresaService } from '../shared/services/share-empresa.service';
 import { Empresa } from '../shared/modelos/empresa';
+import { isPlatformBrowser } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-dashboard',
@@ -30,8 +32,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     constructor(
       private sliderService: AdminSliderService,
-      public shareEmpresaService: ShareEmpresaService
-
+      public shareEmpresaService: ShareEmpresaService,
+      @Inject(PLATFORM_ID) private platformId: string,
+      private titleService: Title,
+      private metaTagService: Meta
       ) {
     }
 
@@ -42,8 +46,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(msg => {
           console.log('recibido cambio datos empresa');
           this.empresa = msg;
+          this.updateTitleAndMetaTags();
         });
-      window.scrollTo(0, 0);  
+      if (isPlatformBrowser(this.platformId)) {
+           window.scrollTo(0, 0);
+        }
+    }
+
+    updateTitleAndMetaTags(): void{
+      this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia})`);
+      this.metaTagService.updateTag({name: 'description', content: 'Configura pedido con menús completos o a la carta'});
+      this.metaTagService.updateTag({name: 'author', content: `restaurante en ${this.empresa.nombre}`});
+
     }
 
     ngOnDestroy(): void {

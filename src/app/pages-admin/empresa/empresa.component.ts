@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 
 import swal from 'sweetalert2';
@@ -98,7 +98,9 @@ export class EmpresaComponent implements OnInit, OnDestroy {
     private location: Location,
     private empresaService: EmpresaService,
     private shareEmpresaService: ShareEmpresaService,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
+
 
   ) {
       this.getEmpresa(1);
@@ -194,7 +196,9 @@ export class EmpresaComponent implements OnInit, OnDestroy {
   }
 
   salir(): void {
-    this.location.back();
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
   }
 
   ayuda(): void {

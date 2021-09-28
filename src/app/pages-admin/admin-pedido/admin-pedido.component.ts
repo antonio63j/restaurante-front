@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import swal from 'sweetalert2';
 import { EntregaPedidoEnum, EstadoPedidoEnum, Pedido } from 'src/app/shared/modelos/pedido';
 import localeEs from '@angular/common/locales/es';
-import { registerLocaleData } from '@angular/common';
+import { isPlatformBrowser, registerLocaleData } from '@angular/common';
 import { AdminPedidoService } from './admin-pedido.service';
 import { ShowErrorService } from 'src/app/shared/services/show-error.service';
 
@@ -70,6 +70,7 @@ export class AdminPedidoComponent implements OnInit, OnDestroy {
         private showErrorService: ShowErrorService,
         private translate: TranslateService,
         private authService: AuthService,
+        @Inject(PLATFORM_ID) private platformId: string
 
     ) {
         this.filtroPedido.init();
@@ -242,7 +243,9 @@ export class AdminPedidoComponent implements OnInit, OnDestroy {
 
                     this.pedidos = response.content as Pedido[];
                     this.paginador = response;
-                    window.scrollTo(0, 0);
+                    if (isPlatformBrowser(this.platformId)) {
+                        window.scrollTo(0, 0);
+                    }
                 },
                 err => this.showErrorService.httpErrorResponse(err, 'Carga de pedidos')
             );

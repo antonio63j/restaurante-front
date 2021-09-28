@@ -30,8 +30,7 @@ export class PwdResetModalComponent implements OnInit, OnDestroy {
     public activeModal: NgbActiveModal,
     public showErrorService: ShowErrorService,
     private modalService: ModalService,
-    private translate: TranslateService,
-    private location: Location
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {

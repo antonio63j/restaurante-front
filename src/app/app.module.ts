@@ -91,7 +91,7 @@ const cookieConfig: NgcCookieConsentConfig = {
   ],
 
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     TranslateModule,
     LanguageTranslationModule,

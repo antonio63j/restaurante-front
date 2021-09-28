@@ -37,6 +37,8 @@ export class ShareEmpresaService {
     private empresaService: EmpresaService,
     private showErrorService: ShowErrorService
     ) {
+
+      console.log('En constructor');
       this.cargaSliders();
       this.cargaTipoplatos();
       this.cargaEmpresa(1);

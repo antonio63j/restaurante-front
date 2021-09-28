@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit,  Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Empresa } from './shared/modelos/empresa';
@@ -11,6 +11,8 @@ import { ConectorSocketService } from './shared/services/conector-socket.service
 
 import { NgcCookieConsentService, NgcInitializeEvent, NgcNoCookieLawEvent, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { TranslateService } from '@ngx-translate/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'Restaurante demo';
   private observ$: Subscription = null;
   private unsubscribe$ = new Subject();
   empresa: Empresa;
@@ -39,7 +40,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private showErrorService: ShowErrorService,
     private conectorSocketService: ConectorSocketService,
     private ccService: NgcCookieConsentService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    @Inject(PLATFORM_ID) private platformId: string,
+    private titleService: Title,
+    private metaTagService: Meta
   ) {
     console.log('arranque app.component, username: ---------------------------');
     console.log(this.authService.usuario.username);
@@ -48,6 +52,26 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setTittleAndMetaTags();
+    if (isPlatformBrowser(this.platformId)) {
+      this.prepararCookieService();
+    }
+  }
+
+  setTittleAndMetaTags(): void {
+    this.titleService.setTitle(`Restaurante`);
+
+    this.metaTagService.addTags([
+      { name: 'keywords', content: 'menu para llevar, menu para recoger, cocina con productos de primera calidad'},
+      { name: 'robots', content: 'index, follow' },
+      { name: 'author', content: 'Restaurante'},
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'description', content: 'web pedidos de comida online' }
+      // { name: 'date', content: '2019-10-31', scheme: 'YYYY-MM-DD' }
+    ]);
+  }
+
+  prepararCookieService(): void {
 
     // Support for translated cookies messages
 
@@ -127,7 +151,9 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(
         json => {
           this.empresa = json;
-          document.title = this.empresa.nombre;
+          if (isPlatformBrowser(this.platformId)) {
+            document.title = this.empresa.nombre;
+          }
           // this.carritoService.cargaCarrito();
           this.shareEmpresaService.updateEmpresaMsg(this.empresa);
           console.log('enviado cambio datos empresa');
@@ -148,11 +174,14 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('No necesario hacer: this.observ$.unsubscribe()');
     }
     // unsubscribe to cookieconsent observables to prevent memory leaks
-    this.popupOpenSubscription.unsubscribe();
-    this.popupCloseSubscription.unsubscribe();
-    this.initializeSubscription.unsubscribe();
-    this.statusChangeSubscription.unsubscribe();
-    this.revokeChoiceSubscription.unsubscribe();
-    this.noCookieLawSubscription.unsubscribe();
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.popupOpenSubscription.unsubscribe();
+      this.popupCloseSubscription.unsubscribe();
+      this.initializeSubscription.unsubscribe();
+      this.statusChangeSubscription.unsubscribe();
+      this.revokeChoiceSubscription.unsubscribe();
+      this.noCookieLawSubscription.unsubscribe();
+    }
   }
 }

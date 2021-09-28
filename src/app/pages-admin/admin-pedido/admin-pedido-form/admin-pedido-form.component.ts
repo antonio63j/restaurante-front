@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -36,7 +36,9 @@ export class AdminPedidoFormComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private adminPedidoService: AdminPedidoService,
     private location: Location,
-    private showErrorService: ShowErrorService
+    private showErrorService: ShowErrorService,
+    @Inject(PLATFORM_ID) private platformId: string
+
   ) {
     this.opcionesEstado = (Object.keys(EstadoPedidoEnum).map(key => {
       return {
@@ -112,7 +114,9 @@ export class AdminPedidoFormComponent implements OnInit, OnDestroy {
   }
 
   salir(): void {
-    this.location.back();
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
   }
 
   public calculosPedido(pedido: Pedido): void {

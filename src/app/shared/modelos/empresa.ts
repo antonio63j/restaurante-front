@@ -15,9 +15,11 @@ export class DiaDescansoOpciones {
 export class Empresa {
     id: number;
     nombre: string;
-    telefono: string;
+    cif: string;
     direccion: string;
+    localidad: string;
     provincia: string;
+    telefono: string;
     email: string;
     urlWeb: string;
     descripcionBreve: string;

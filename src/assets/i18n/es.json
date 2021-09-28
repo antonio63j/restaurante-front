@@ -57,7 +57,7 @@
 	
 	"cookie": {
         "header": "Cookies utilizadas en la web!",
-        "message": "Únicamente utilizamos cookies propias con finalidad técnica, no se recaba ni cede datos de carácter personal de los usuarios a terceros.",
+        "message": "Únicamente utilizamos cookies con finalidad de mejorar la experincia de navegación, no se recaba ni ceden datos de carácter personal de los usuarios a terceros.",
         "dismiss": "Entendido!",
         "allow": "Permitir cookies",
         "deny": "Ocultar",

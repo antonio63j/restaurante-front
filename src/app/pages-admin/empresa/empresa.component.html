@@ -24,12 +24,21 @@
                 <div class="col-md-3">
                   <mat-form-field class="example-full-width">
                     <input matInput class="form-control" name="nombre" placeholder="Empresa"
-                      [(ngModel)]="empresa.nombre" #nombre="ngModel" minlength="4" maxlength="30" required>
+                      [(ngModel)]="empresa.nombre" #nombre="ngModel" minlength="2" maxlength="30" required>
                     <mat-error *ngIf="nombre.hasError('required')">
                       Es <strong>necesario rellenar </strong> este campo
                     </mat-error>
                   </mat-form-field>
                 </div>
+                <div class="col-md-3">
+                <mat-form-field class="example-full-width">
+                  <input matInput class="form-control" name="cif" placeholder="CIF"
+                    [(ngModel)]="empresa.cif" #cif="ngModel" maxlength="9">
+                </mat-form-field>
+                </div>
+              </div>
+             
+              <div class="row">
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
                     <input matInput class="form-control" id="direccion" name="direccion" placeholder="Dirección"
@@ -41,10 +50,23 @@
                 </div>
                 <div class="col-md-3">
                   <mat-form-field class="example-full-width">
-                    <input matInput class="form-control" name="provincia" placeholder="Provincia"
-                      [(ngModel)]="empresa.provincia" #nombre="ngModel">
+                    <input matInput class="form-control" name="localidad" placeholder="Localidad"
+                      [(ngModel)]="empresa.localidad" #localidad="ngModel" maxlength=40 required>
+                    <mat-error *ngIf="localidad.hasError('required')">
+                        Es <strong>necesario rellenar </strong> este campo
+                    </mat-error>  
                   </mat-form-field>
                 </div>
+                <div class="col-md-3">
+                  <mat-form-field class="example-full-width">
+                    <input matInput class="form-control" name="provincia" placeholder="Provincia"
+                      [(ngModel)]="empresa.provincia" #provincia="ngModel" minlength="4" maxlength="30" required>
+                    <mat-error *ngIf="provincia.hasError('required')">
+                        Es <strong>necesario rellenar </strong> este campo
+                    </mat-error>   
+                  </mat-form-field>
+                </div>
+
               </div>
               <div class="row">
                 <div class="col-md-2">
