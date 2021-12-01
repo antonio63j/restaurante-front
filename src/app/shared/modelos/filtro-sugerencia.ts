@@ -10,9 +10,14 @@ export class FiltroSugerencia {
     descripcion: string;
     visible?: string;
 
-    constructor() {
+    constructor(size?: number) {
+       if (size === undefined){
+           size = 10;
+       }
        this.init();
-       this.initPage('0', '10', 'label', 'asc');
+       //  this.initPage('0', '10', 'label', 'asc');
+       this.initPage('0', size.toString(), 'label', 'asc');
+
     }
 
     init(): void{

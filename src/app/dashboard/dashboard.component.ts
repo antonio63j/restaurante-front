@@ -10,59 +10,69 @@ import { ShareEmpresaService } from '../shared/services/share-empresa.service';
 import { Empresa } from '../shared/modelos/empresa';
 import { isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+import { CanonicalService } from '../shared/services/canonical.service';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss'],
-    animations: [routerTransition()]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [routerTransition()]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-    // public alerts: Array<any> = [];
-    // public sliders: Array<any> = [];
-    // public utilidades: Array<any> = [];
+  // public alerts: Array<any> = [];
+  // public sliders: Array<any> = [];
+  // public utilidades: Array<any> = [];
 
-    public sliders: Slider [];
+  public sliders: Slider[];
 
-    private unsubscribe$ = new Subject();
-    public host: string = environment.urlEndPoint;
-    public loading: boolean;
-    public subscription: Subscription;
-    public empresa: Empresa = new Empresa();
+  private unsubscribe$ = new Subject();
+  // public host: string = environment.urlEndPoint;
+  public loading: boolean;
+  public subscription: Subscription;
+  public empresa: Empresa = new Empresa();
 
-    constructor(
-      private sliderService: AdminSliderService,
-      public shareEmpresaService: ShareEmpresaService,
-      @Inject(PLATFORM_ID) private platformId: string,
-      private titleService: Title,
-      private metaTagService: Meta
-      ) {
-    }
+  constructor(
+    private sliderService: AdminSliderService,
+    public shareEmpresaService: ShareEmpresaService,
+    @Inject(PLATFORM_ID) private platformId: string,
+    private titleService: Title,
+    private metaTagService: Meta,
+    private canonicalService: CanonicalService
+  ) {
+  }
 
-    ngOnInit(): void {
-      this.loading = true;
-      this.subscription = this.shareEmpresaService.getEmpresaMsg().pipe(
-        takeUntil(this.unsubscribe$))
+  ngOnInit(): void {
+    this.loading = true;
+    this.subscription = this.shareEmpresaService.getEmpresaMsg().pipe(
+      takeUntil(this.unsubscribe$))
       .subscribe(msg => {
-          console.log('recibido cambio datos empresa');
-          this.empresa = msg;
-          this.updateTitleAndMetaTags();
-        });
-      if (isPlatformBrowser(this.platformId)) {
-           window.scrollTo(0, 0);
-        }
+        console.log('recibido cambio datos empresa');
+        this.empresa = msg;
+        this.updateTitleAndMetaTags();
+      });
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo(0, 0);
     }
+  }
 
-    updateTitleAndMetaTags(): void{
-      this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia})`);
-      this.metaTagService.updateTag({name: 'description', content: 'Configura pedido con menús completos o a la carta'});
-      this.metaTagService.updateTag({name: 'author', content: `restaurante en ${this.empresa.nombre}`});
+  updateTitleAndMetaTags(): void {
+    this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) | pedidos online`);
+    // this.metaTagService.updateTag({name: 'keywords', content: 'cocina, pedidos,
+    // restaurante, tradicional, calidad, buen precio, menú, carta, pedidos, online'});
 
-    }
+    this.metaTagService.updateTag({
+      name: 'description', content: `${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}), \
+cocinamos con productos de primera calidad, principalmente de temporada, \
+elabora tu pedido online entre diferentes menús completos o platos, \
+es posible entregar los pedidos a domicilio o recogida en el propio restaurante`}, `name='description'`);
 
-    ngOnDestroy(): void {
-        console.log('ngOnDestroy (), realizando unsubscribes');
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-    }
+    this.canonicalService.updateCanonicalUrl(environment.domainUrl);
+
+  }
+
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy (), realizando unsubscribes');
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

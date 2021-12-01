@@ -5,8 +5,11 @@
 
   <div class="col-md-8">
     <!-- <app-loading [loading]= "loading"></app-loading> -->
-
-    <ngb-carousel>
+    <div class="loading" *ngIf="shareEmpresaService.slidersData.length==0">
+      <img src="../../assets/images/Spinner-2.gif" /> 
+    </div> 
+    
+    <ngb-carousel  *ngIf="shareEmpresaService.slidersData.length>0">
       <ng-template *ngFor="let sliderData of shareEmpresaService.slidersData" ngbSlide>
         <!-- <img [src]="slider.imagePath" alt="Random first slide" class="img-fluid mx-auto d-block" width="100%" /> -->
         <!-- <img [src]="slider.imgFileName" alt="Random first slide" class="img-fluid mx-auto d-block rounded" /> -->

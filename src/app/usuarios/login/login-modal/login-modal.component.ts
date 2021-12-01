@@ -45,6 +45,8 @@ export class LoginModalComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   login(): void {
+
+
     this.authService.login(this.usuario).subscribe(
       response => {
         this.authService.guardarUsuario(response.access_token);

@@ -34,7 +34,7 @@ export class ModalConModeloService implements OnDestroy {
         );
     }
 
-    closeModalScrollable() {
+    closeModalScrollable(): void {
         this.modal.close();
     }
 

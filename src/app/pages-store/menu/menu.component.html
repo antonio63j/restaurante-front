@@ -14,14 +14,16 @@
       <mat-card style="margin-bottom: 30px;">
         <mat-card-header>
         </mat-card-header>
-        <img *ngIf="menu?.imgFileName" class="img-thumbnail" src="{{host}}/api/menu/uploads/img/{{menu.imgFileName}}">
+        <img *ngIf="menu?.imgFileName" class="img-thumbnail"
+        (click)='comprar(menu)' style="cursor: pointer;"
+        src="{{host}}/api/menu/uploads/img/{{menu.imgFileName}}">
         <mat-card-content>
           <p>{{menu.label | slice:0:37}}</p>
         </mat-card-content>
         <mat-card-actions>
           <button mat-stroked-button color="success" style="margin-right: 1px"
-            (click)='comprar(menu)'>{{'Entrar' |translate}}</button>
-
+            (click)='comprar(menu)'>{{'Entrar' |translate}}
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>

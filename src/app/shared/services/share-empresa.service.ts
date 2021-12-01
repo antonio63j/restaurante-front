@@ -22,7 +22,7 @@ export class ShareEmpresaService {
   public slider: Slider = new Slider();
   public sliders: Slider [];
   public slidersData: SliderData [] = [];
-  public sliderData: SliderData = new SliderData();
+  // public sliderData: SliderData = new SliderData();
   public tipoplatos: Tipoplato [] = [];
 
   private unsubscribe$ = new Subject();

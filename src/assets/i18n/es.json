@@ -57,10 +57,10 @@
 	
 	"cookie": {
         "header": "Cookies utilizadas en la web!",
-        "message": "Únicamente utilizamos cookies con finalidad de mejorar la experincia de navegación, no se recaba ni ceden datos de carácter personal de los usuarios a terceros.",
+        "message": "Utilizamos cookies funcionales y análiticas con la finalidad de mejorar la experincia de navegación, con ellas no se recaban ni ceden datos de carácter personal",
         "dismiss": "Entendido!",
         "allow": "Permitir cookies",
-        "deny": "Ocultar",
+        "deny": "Rechazar cookies",
         "link": "Ver más",
         "policy": "Política de cookies"
     }

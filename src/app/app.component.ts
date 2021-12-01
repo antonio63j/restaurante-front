@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit,  Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { Empresa } from './shared/modelos/empresa';
 import { ShareEmpresaService } from './shared/services/share-empresa.service';
 import { EmpresaService } from './pages-admin/empresa/empresa.service';
@@ -8,11 +8,26 @@ import { CarritoService } from './pages-store/carrito/carrito.service';
 import { AuthService } from './usuarios/auth.service';
 import { ShowErrorService } from './shared/services/show-error.service';
 import { ConectorSocketService } from './shared/services/conector-socket.service';
-
 import { NgcCookieConsentService, NgcInitializeEvent, NgcNoCookieLawEvent, NgcStatusChangeEvent } from 'ngx-cookieconsent';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Title, Meta } from '@angular/platform-browser';
+
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { constants } from 'fs';
+
+import { CookieParams } from '../app/cookies/cookie-params';
+import { environment } from 'src/environments/environment';
+import { ModalConModeloService } from 'src/app/shared/services/modal-con-modelo.service';
+import { CookieDetalleComponent } from './cookies/cookie-detalle/cookie-detalle.component';
+
+declare var gtag;
+
+// Declare gTM dataLayer array.
+declare global {
+  interface Window { dataLayer: any[]; }
+}
 
 @Component({
   selector: 'app-root',
@@ -32,6 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
   private revokeChoiceSubscription: Subscription;
   private noCookieLawSubscription: Subscription;
 
+  private cookieParams: CookieParams;
+
+
   constructor(
     private empresaService: EmpresaService,
     private shareEmpresaService: ShareEmpresaService,
@@ -43,30 +61,85 @@ export class AppComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     @Inject(PLATFORM_ID) private platformId: string,
     private titleService: Title,
-    private metaTagService: Meta
+    private metaTagService: Meta,
+    private router: Router,
+    private modalConModeloService: ModalConModeloService
   ) {
+
+    // window.dataLayer.push({'cookiesSet': true});
+    // this.indicarUserConsent();
+
     console.log('arranque app.component, username: ---------------------------');
     console.log(this.authService.usuario.username);
     this.getEmpresa(1);
     this.conectorSocketService.connect();
+
+    // No se utiliza, para este cometido se está utilizando GTM (Google Tag Manager)
+    // --------------------------------------------------------
+    // this.cookieParams = {
+    //   googleAnalyticsDivName: 'divGoogleAnalytics',
+    //   googleAnalyticsId: environment.googleAnalyticsId
+    // };
+
+    // const navEndEvents$ = this.router.events
+    //   .pipe(
+    //     filter(event => event instanceof NavigationEnd)
+    //   );
+    // navEndEvents$.subscribe((event: NavigationEnd) => {
+    //   gtag('config', 'G-8SCFLYHJBQ', {
+    //     page_path: event.urlAfterRedirects
+    //   });
+    // });
+
   }
 
   ngOnInit(): void {
     this.setTittleAndMetaTags();
     if (isPlatformBrowser(this.platformId)) {
       this.prepararCookieService();
+
     }
   }
+
+  // no se están invocando, las libreias de tagmanager se incluyen en index.html
+  // ----------------------------------------------
+  // loadGoogleAnalytics(trackingID: string): void {
+
+  //   const div = document.createElement('div');
+  //   div.id = 'divGoogleAnalytics';
+
+  //   const gaScript = document.createElement('script');
+  //   gaScript.setAttribute('async', 'true');
+  //   gaScript.setAttribute('src', `https://www.googletagmanager.com/gtag/js?id=${trackingID}`);
+
+  //   const gaScript2 = document.createElement('script');
+  //   gaScript2.innerText = `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag(\'js\', new Date());gtag(\'config\', \'${trackingID}\');`;
+
+  //   div.appendChild(gaScript);
+  //   div.appendChild(gaScript2);
+
+  //   const head = document.getElementsByTagName('head')[0];
+  //   head.insertBefore(div, head.firstChild);
+
+  //   // document.getElementsByTagName('head')[0].appendChild(div);
+
+  // }
+
+  // // no se está invocando, se incluye en index.html
+  //   removeGoogleAnalytics(divId: string): void {
+  //     document.getElementById(divId).remove();
+  //   }
+  // ----------------------------------------------
+
+
 
   setTittleAndMetaTags(): void {
     this.titleService.setTitle(`Restaurante`);
 
     this.metaTagService.addTags([
-      { name: 'keywords', content: 'menu para llevar, menu para recoger, cocina con productos de primera calidad'},
+      { name: 'keywords', content: 'menu, carta, pedido, online, domicilio, recoger, cocina, restaurante, calidad, precio, cerca' },
       { name: 'robots', content: 'index, follow' },
-      { name: 'author', content: 'Restaurante'},
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'description', content: 'web pedidos de comida online' }
+      { name: 'author', content: 'Restaurante' },
       // { name: 'date', content: '2019-10-31', scheme: 'YYYY-MM-DD' }
     ]);
   }
@@ -81,11 +154,11 @@ export class AppComponent implements OnInit, OnDestroy {
     // const browserLang = this.translateService.getBrowserLang();
     // this.translateService.use(browserLang.match(/en|es/) ? browserLang : 'en');
 
-    this.translateService//
+    this.translateService
       .get(['cookie.header', 'cookie.message', 'cookie.dismiss', 'cookie.allow', 'cookie.deny', 'cookie.link', 'cookie.policy'])
       .subscribe(data => {
 
-        this.ccService.getConfig().content = this.ccService.getConfig().content || {} ;
+        this.ccService.getConfig().content = this.ccService.getConfig().content || {};
         // Override default messages with the translated ones
         this.ccService.getConfig().content.header = data['cookie.header'];
         this.ccService.getConfig().content.message = data['cookie.message'];
@@ -97,51 +170,105 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.ccService.destroy(); // remove previous cookie bar (with default messages)
         this.ccService.init(this.ccService.getConfig()); // update config with translated messages
+
+        if (!this.ccService.hasConsented()) {
+          this.deleteCookies();
+        }
+
       });
 
     // subscribe to cookieconsent observables to react to main events
     this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
-        console.log('popupOpenSubscription');
-        console.log(this.ccService.getConfig());
+
+        // console.log('popupOpenSubscription');
+        // console.log(this.ccService.getConfig());
       });
 
     this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
-        console.log('popupCloseSubscription');
+
+        // console.log('popupCloseSubscription');
 
       });
 
     this.initializeSubscription = this.ccService.initialize$.subscribe(
       (event: NgcInitializeEvent) => {
         // you can use this.ccService.getConfig() to do stuff...
-        console.log('initializeSubscription');
+
+        // console.log('initializeSubscription');
 
       });
 
     this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
-        // you can use this.ccService.getConfig() to do stuff...
-        console.log('statusChangeSubscription');
+
+        if (event.status === 'deny') {
+          // this.cookiesDetalle(this.cookieParams);
+          console.log('hasConsented:');
+          console.log(this.ccService.hasConsented());
+
+          if (isPlatformBrowser(this.platformId)) {
+            window.dataLayer.push({ event: 'cookieNoOK' });
+            this.deleteCookies();
+          }
+          // this.ccService.close(false);
+        } else {
+          if (event.status === 'allow') {
+            // window['dataLayer'].push({cookiesSet: true});
+            if (isPlatformBrowser(this.platformId)) {
+              window.dataLayer.push({ event: 'cookieOK' });
+            }
+          }
+        }
 
       });
 
     this.revokeChoiceSubscription = this.ccService.revokeChoice$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
-        console.log('revokeChoiceSubscription');
+
+        // console.log('revokeChoiceSubscription');
 
       });
 
     this.noCookieLawSubscription = this.ccService.noCookieLaw$.subscribe(
       (event: NgcNoCookieLawEvent) => {
         // you can use this.ccService.getConfig() to do stuff...
-        console.log('noCookieLawSubscription');
+
+        // console.log('noCookieLawSubscription');
 
       });
 
+  }
+
+  deleteCookies(): void {
+    document.cookie = `_ga=; Path=/; Domain=${environment.domain}; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+    document.cookie = `_ga_${environment.googleAnalyticsId}=; Path=/; Domain=${environment.domain}; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+  }
+
+  // de momento no se está invocando
+  public cookiesDetalle(cookieParams: CookieParams): void {
+    this.modalConModeloService.openModalScrollable(
+      CookieDetalleComponent,
+      { size: 'lg', backdrop: 'static', scrollable: true, centered: true, keyboard: false },
+      cookieParams,
+      'cookiParams',
+      'Los campos con * son obligatorios',
+      'Datos del sugerencia'
+    ).pipe(
+      take(1) // take() manages unsubscription for us
+    ).subscribe(result => {
+      console.log({ confirmedResult: result });
+
+      // this.sugerenciaService.getSugerencias(this.filtroSugerencia).subscribe(respon => {
+      //     this.sugerencias = respon.content as Sugerencia[];
+      //     this.paginador = respon;
+
+      //         });
+    });
   }
 
   getEmpresa(id: number): void {
@@ -185,3 +312,5 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 }
+
+

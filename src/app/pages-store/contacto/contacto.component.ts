@@ -10,6 +10,8 @@ import { ShowErrorService } from 'src/app/shared/services/show-error.service';
 import { AuthService } from 'src/app/usuarios/auth.service';
 import { EmailContactoCliente } from 'src/app/shared/modelos/mensajes/email-contacto-cliente';
 import { ContactoService } from './contacto.service';
+import { Meta, Title } from '@angular/platform-browser';
+import { CanonicalService } from 'src/app/shared/services/canonical.service';
 
 
 @Component({
@@ -34,7 +36,11 @@ export class ContactoComponent implements OnInit {
     public  authService: AuthService,
     private location: Location,
     private showErrorService: ShowErrorService,
-    @Inject(PLATFORM_ID) private platformId: string
+    @Inject(PLATFORM_ID) private platformId: string,
+    private titleService: Title,
+    private metaTagService: Meta,
+    private canonicalService: CanonicalService
+
 
   ) {
 
@@ -50,6 +56,19 @@ export class ContactoComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       window.scrollTo(0, 0);
     }
+    this.updateTitleAndMetaTags();
+  }
+
+  updateTitleAndMetaTags(): void{
+
+    this.titleService.setTitle(`Envíanos tu consulta o sugerencia`);
+    // tslint:disable-next-line: max-line-length
+    // this.metaTagService.updateTag({name: 'keywords', content: 'menu, platos, postres, primero, sugundo, arroces, pescados, pedidos, online, cocina, tradicional, calidad, buen precio'}, "name='keywords'");
+    this.metaTagService.updateTag({name: 'description', content: `Desde aquí los usuarios registrados o no resgistrados \
+pueden mandarnos un mensaje de consulta o sugerencia, responderemos lo antes posible`}, `name='description'`);
+
+    this.canonicalService.updateCanonicalUrl ();
+
   }
 
   enviar(emailContactoCliente: EmailContactoCliente): void {

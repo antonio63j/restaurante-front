@@ -16,6 +16,8 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
 import { Location } from '@angular/common';
 import { PwdResetModalComponent } from './pwd-reset-modal/pwd-reset-modal.component';
 import { SignupModalComponent } from '../signup/signup-modal/signup-modal.component';
+import { Meta, Title } from '@angular/platform-browser';
+import { CanonicalService } from 'src/app/shared/services/canonical.service';
 
 const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
@@ -43,7 +45,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private modalConModeloService: ModalConModeloService,
     public authService: AuthService,
-    private location: Location) {
+    private location: Location,
+    private titleService: Title,
+    private metaTagService: Meta,
+    private canonicalService: CanonicalService
+    ) {
   }
 
   ngOnInit(): void {
@@ -55,8 +61,22 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.subscripcioneventoCerrarModalScrollable();
       this.crearModalLogin();
     }
+
+    this.updateTitleAndMetaTags();
+
   }
 
+  updateTitleAndMetaTags(): void{
+
+    this.titleService.setTitle(`Pon tu cuenta de correo y contraseña para entrar en sesión`);
+    // tslint:disable-next-line: max-line-length
+    // this.metaTagService.updateTag({name: 'keywords', content: 'menu, platos, postres, primero, sugundo, arroces, pescados, pedidos, online, cocina, tradicional, calidad, buen precio'}, "name='keywords'");
+    this.metaTagService.updateTag({name: 'description', content: `Entra en sesión con tu cuenta de correo y contraseña, \
+para realizar pedidos online, es necesario entrar en sesión`}, `name='description'`);
+
+    this.canonicalService.updateCanonicalUrl ();
+
+  }
 
   crearModalLogin(): void {
     this.usuario.username = null;

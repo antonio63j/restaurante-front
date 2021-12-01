@@ -27,7 +27,7 @@ import { CustomDateAdapter } from './shared/adapters/custom-date-adapter';
 import { DatePipe } from '@angular/common';
 
 import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
-import { environment } from 'src/environments/environment';
+import { env, environment } from 'src/environments/environment';
 
 export const MY_FORMATS = {
   parse: {
@@ -43,7 +43,7 @@ export const MY_FORMATS = {
 
 const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
-    domain: environment.domain // it is recommended to set your domain, for cookies to work properly
+    domain: env.app + environment.domain // it is recommended to set your domain, for cookies to work properly
   },
   palette: {
     popup: {
@@ -56,7 +56,7 @@ const cookieConfig: NgcCookieConsentConfig = {
   theme: 'classic',
   position: 'bottom-right',
   type: 'opt-out',
-  layout: 'basic-close',
+  layout: 'basic',
   layouts: {
     'my-custom-layout': '{{messagelink}}{{compliance}}'
   },

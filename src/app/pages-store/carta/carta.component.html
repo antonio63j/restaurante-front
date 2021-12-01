@@ -24,7 +24,8 @@
             <mat-card style="margin-bottom: 30px;">
                 <mat-card-header>
                 </mat-card-header>
-                <img *ngIf="sugerencia?.imgFileName" class="img-thumbnail"
+                <img *ngIf="sugerencia?.imgFileName" class="img-thumbnail" 
+                (click)='comprar(sugerencia)' style="cursor: pointer;"
                     src="{{host}}/api/sugerencia/uploads/img/{{sugerencia.imgFileName}}">
                 <mat-card-content>
                     <p>{{sugerencia.label | slice:0:37}}</p>
@@ -39,7 +40,7 @@
     <div class="card-footer text-muted con-scroll">
         <div class="row">
             <div class="col">
-                <paginator-nav *ngIf="paginador" [paginador]="paginador" [sizes]="[5, 10, 15, 30, 50]"
+                <paginator-nav *ngIf="paginador" [paginador]="paginador" [sizes]="[8, 12, 20, 32, 40]"
                     [sizePage]=+filtroSugerencia.size (messageToEmit)="getPagina($event)">
                 </paginator-nav>
             </div>

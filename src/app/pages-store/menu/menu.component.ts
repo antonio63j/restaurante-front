@@ -19,6 +19,7 @@ import { Empresa } from 'src/app/shared/modelos/empresa';
 import { ShareEmpresaService } from 'src/app/shared/services/share-empresa.service';
 import { AdminTipoplatoService } from 'src/app/pages-admin/admin-tipoplato/admin-tipoplato.service';
 import { EmpresaService } from 'src/app/pages-admin/empresa/empresa.service';
+import { CanonicalService } from 'src/app/shared/services/canonical.service';
 
 const swalWithBootstrapButtons = swal.mixin({
   customClass: {
@@ -58,7 +59,8 @@ export class MenuComponent implements OnInit, OnDestroy{
     private titleService: Title,
     private metaTagService: Meta,
     private tipoplatoService: AdminTipoplatoService,
-    private empresaService: EmpresaService
+    private empresaService: EmpresaService,
+    private canonicalService: CanonicalService
 
   ) {
     this.empresa = this.shareEmpresaService.copiaEmpresa();
@@ -76,14 +78,9 @@ export class MenuComponent implements OnInit, OnDestroy{
         .subscribe(
           json => {
             this.empresa = json;
-
-            console.log('empresa=');
-            console.log(this.empresa.nombre);
-
             this.updateTitleAndMetaTags();
           }
           , err => this.showErrorService.httpErrorResponse(err, 'Error carga datos empresa', '', 'error')
-
         );
   }
 
@@ -110,8 +107,14 @@ export class MenuComponent implements OnInit, OnDestroy{
   updateTitleAndMetaTags(): void{
     const menus = Array.prototype.map.call(this.menus, s => s.label).toString();
 
-    this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) te presenta su menu`);
-    this.metaTagService.updateTag({name: 'description', content: `Opciones de nuestro menú: ${menus}`});
+    this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) te presenta su menú`);
+    // tslint:disable-next-line: max-line-length
+    // this.metaTagService.updateTag({name: 'keywords', content: 'menu, platos, postres, primero, sugundo, arroces, pescados, pedidos, online, cocina, tradicional, calidad, buen precio'}, "name='keywords'");
+    this.metaTagService.updateTag({name: 'description', content: `restaurante en ${this.empresa.localidad} (${this.empresa.provincia}), \
+opciones de nuestro menú: ${menus}, con varios primeros, segundos, y postres a elegir online y entrega a domicilio o venir a recoger`}, `name='description'`);
+
+    this.canonicalService.updateCanonicalUrl ();
+
   }
 
   public comprar(menu: Menu): void {

@@ -228,7 +228,9 @@
                   <td style="width: 300px !important ">{{ sugerencia.label}}</td>
                   <td>{{ sugerencia.tipo}}</td>
                   <td>{{ sugerencia.precio}}</td>
-                  <td>{{ sugerencia.descripcion}}</td>
+                  <!-- <td>{{ sugerencia.descripcion}}</td> -->
+                  <td><div [innerHTML]=sugerencia.descripcion></div></td>
+
                   <!-- <td *ngIf = "authService.hasRole('ROLE_ADMIN')"> -->
                   <td class="btncolumn" *ngIf="authService.hasRole('ROLE_ADMIN')">
                     <button type="button" class="btn btn-danger btn-sm" (click)='addMenuSugerencia(sugerencia)'>

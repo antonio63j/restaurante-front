@@ -25,6 +25,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Empresa } from 'src/app/shared/modelos/empresa';
 import { AdminTipoplatoService } from 'src/app/pages-admin/admin-tipoplato/admin-tipoplato.service';
 import { EmpresaService } from 'src/app/pages-admin/empresa/empresa.service';
+import { CanonicalService } from 'src/app/shared/services/canonical.service';
 
 const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -58,7 +59,7 @@ export class CartaComponent implements OnInit, OnDestroy {
     public empresa: Empresa;
 
     public filterChecked = false;
-    public filtroSugerencia: FiltroSugerencia = new FiltroSugerencia();
+    public filtroSugerencia: FiltroSugerencia = new FiltroSugerencia(12);
 
     public disable = true;
 
@@ -81,7 +82,8 @@ export class CartaComponent implements OnInit, OnDestroy {
         private titleService: Title,
         private metaTagService: Meta,
         private tipoplatoService: AdminTipoplatoService,
-        private empresaService: EmpresaService
+        private empresaService: EmpresaService,
+        private canonicalService: CanonicalService
 
     ) {
         this.filtroSugerencia.setSoloVisibles();
@@ -173,14 +175,14 @@ export class CartaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.datosTitleAndMetaTags();
+        this.datosTitleMetaTagsAndCanonical();
 
         this.nuevaPagina(0);
         this.subscripcioneventoCerrarModalScrollable();
 
     }
 
-    datosTitleAndMetaTags(): void{
+    datosTitleMetaTagsAndCanonical(): void{
 
         if (this.tipoPlatos.length === 0) {
           this.cargaTipoPlatos();
@@ -194,8 +196,13 @@ export class CartaComponent implements OnInit, OnDestroy {
     updateTitleAndMetaTags(): void{
         const tPlatos = Array.prototype.map.call(this.tipoPlatos, s => s.nombre).toString();
 
-        this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) te presenta su carta`);
-        this.metaTagService.updateTag({name: 'description', content: `Grupo de platos de nuestra carta: ${tPlatos}`});
+        this.titleService.setTitle(`${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}) te presenta su carta para elegir online`);
+        // this.metaTagService.updateTag({name: 'keywords', content: `platos de nuestra carta: ${tPlatos}`});
+        this.metaTagService.updateTag({name: 'description', content: `restaurante en ${this.empresa.localidad} ( ${this.empresa.provincia} ), \
+en nuestro restaurante puedes crear online tu pedido a partir de la carta, \
+y podremos entregar el pedido a domicilio o vienes recoger`}, `name='description'`);
+
+        this.canonicalService.updateCanonicalUrl ();
     }
 
       cargaTipoPlatos(): void {
