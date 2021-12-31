@@ -106,7 +106,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
-                    <textarea matInput class="form-control" placeholder="Breve descripción de la empresa"
+                    <textarea matInput class="form-control" placeholder="Nota/Novedad breve que aparecerá en página principal"
                       id="descripcionBreve" name="descripcionBreve" [(ngModel)]="empresa.descripcionBreve"
                       #descripcionBreve="ngModel" required>
                                   </textarea>
@@ -127,7 +127,7 @@
 
               <div class="row container" style="margin-top: 5px;">
                 <div class="col-md-12">
-                  <label style="color: grey;">Portada</label>
+                  <label style="color: grey;">Texto en portada de la página principal</label>
                   <angular-editor id="editor1" name="portada" [config]="configPortada" [(ngModel)]="empresa.portada">
                   </angular-editor>
                 </div>

@@ -21,6 +21,8 @@ import { CookieParams } from '../app/cookies/cookie-params';
 import { environment } from 'src/environments/environment';
 import { ModalConModeloService } from 'src/app/shared/services/modal-con-modelo.service';
 import { CookieDetalleComponent } from './cookies/cookie-detalle/cookie-detalle.component';
+import { BrowserStack } from 'protractor/built/driverProviders';
+import { CanonicalService } from './shared/services/canonical.service';
 
 declare var gtag;
 
@@ -62,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: string,
     private titleService: Title,
     private metaTagService: Meta,
+    private canonicalService: CanonicalService,
     private router: Router,
     private modalConModeloService: ModalConModeloService
   ) {
@@ -94,7 +97,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setTittleAndMetaTags();
     if (isPlatformBrowser(this.platformId)) {
       this.prepararCookieService();
 
@@ -140,8 +142,14 @@ export class AppComponent implements OnInit, OnDestroy {
       { name: 'keywords', content: 'menu, carta, pedido, online, domicilio, recoger, cocina, restaurante, calidad, precio, cerca' },
       { name: 'robots', content: 'index, follow' },
       { name: 'author', content: 'Restaurante' },
-      // { name: 'date', content: '2019-10-31', scheme: 'YYYY-MM-DD' }
-    ]);
+      {name: 'description', content: `${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}), \
+      cocinamos con productos de primera calidad, principalmente de temporada, \
+      haz tu pedido online entre diferentes menús completos o a la carta, \
+      es posible entregar los pedidos a domicilio o recogida en el propio restaurante}`
+      }]);
+
+    this.canonicalService.updateCanonicalUrl();
+
   }
 
   prepararCookieService(): void {
@@ -171,8 +179,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.ccService.destroy(); // remove previous cookie bar (with default messages)
         this.ccService.init(this.ccService.getConfig()); // update config with translated messages
 
-        if (!this.ccService.hasConsented()) {
-          this.deleteCookies();
+        if (this.ccService.hasConsented()) {
+          this.cookiesOn()
+        } else {
+          this.cookiesOff()
         }
 
       });
@@ -205,24 +215,47 @@ export class AppComponent implements OnInit, OnDestroy {
     this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
 
-        if (event.status === 'deny') {
-          // this.cookiesDetalle(this.cookieParams);
-          console.log('hasConsented:');
-          console.log(this.ccService.hasConsented());
+        // if (event.status === 'deny') {
+        //   // this.cookiesDetalle(this.cookieParams);
+        //   console.log('hasConsented:');
+        //   console.log(this.ccService.hasConsented());
 
-          if (isPlatformBrowser(this.platformId)) {
-            window.dataLayer.push({ event: 'cookieNoOK' });
-            this.deleteCookies();
+        //   if (isPlatformBrowser(this.platformId)) {
+        //     window.dataLayer.push({ event: 'cookieNoOK' });
+        //     this.deleteCookies();
+        //   }
+        //   // this.ccService.close(false);
+        // } else {
+        //   if (event.status === 'allow') {
+        //     // window['dataLayer'].push({cookiesSet: true});
+        //     if (isPlatformBrowser(this.platformId)) {
+        //       window.dataLayer.push({ event: 'cookieOK' });
+        //     }
+        //   }
+        // }
+
+
+
+        if (isPlatformBrowser(this.platformId)) {
+          console.log(`ccService.hasConsented()=${this.ccService.hasConsented()}`);
+          console.log(`event.status=${event.status}`);
+
+          switch (event.status) {
+          case 'allow': {
+            this.cookiesOn();
+            break;
           }
-          // this.ccService.close(false);
-        } else {
-          if (event.status === 'allow') {
-            // window['dataLayer'].push({cookiesSet: true});
-            if (isPlatformBrowser(this.platformId)) {
-              window.dataLayer.push({ event: 'cookieOK' });
-            }
+          case 'deny': {
+            this.cookiesOff();
+            break;
+          }
+
+          default: {
+            console.log('event.status <> allow y de deny');
+            break;
           }
         }
+      }
 
       });
 
@@ -243,6 +276,19 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
   }
+
+  cookiesOn(): void {
+    console.log('push=cookieOK');
+    window.dataLayer.push({ event: 'cookieOK' });
+  }
+
+  cookiesOff(): void {
+    console.log('push=cookieNoOK');
+    window.dataLayer.push({ event: 'cookieNoOK' });
+    this.deleteCookies();
+
+  }
+
 
   deleteCookies(): void {
     document.cookie = `_ga=; Path=/; Domain=${environment.domain}; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
@@ -279,7 +325,7 @@ export class AppComponent implements OnInit, OnDestroy {
         json => {
           this.empresa = json;
           if (isPlatformBrowser(this.platformId)) {
-            document.title = this.empresa.nombre;
+            this.setTittleAndMetaTags();
           }
           // this.carritoService.cargaCarrito();
           this.shareEmpresaService.updateEmpresaMsg(this.empresa);

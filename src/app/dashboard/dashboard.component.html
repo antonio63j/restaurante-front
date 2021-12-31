@@ -25,12 +25,30 @@
   </div>
 
   <div class="col-md-4">
-    <div class="container-fluid">
 
-      <div [innerHTML]=empresa.portada></div>
-
-      <a [routerLink]="['/contacto']" class="btn btn-banner1 my-sm-3 mb-3">Contacte con nosotros</a>
+    <div class="card" style="background-color:navajowhite">
+      <div class="card-body">
+        <h4 class="card-title text-black">Novedades</h4>
+        <p class="card-text" style="font-size: larger;">
+            {{empresa.descripcionBreve}}
+        </p>    
+      </div>
     </div>
+
+    <!-- <div class="container-fluid">
+      <div [innerHTML]=empresa.portada></div>
+      <a [routerLink]="['/contacto']" class="btn btn-banner1 my-sm-3 mb-3">Contacte con nosotros</a>
+    </div> -->
+
+    <div class="card">
+      <div class="card-body">
+        <div class="card-text">
+          <div [innerHTML]=empresa.portada></div>
+            <a [routerLink]="['/contacto']" class="btn btn-banner1 my-sm-3 mb-3">Contacte con nosotros</a>
+          </div>  
+        </div>
+    </div>
+
   </div>
 
 </div>

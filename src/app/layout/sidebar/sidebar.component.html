@@ -1,9 +1,16 @@
 <!-- <nav [ngClass]="{ sidebarPushRight: isActive, collapsed: collapsed }" class="sidebar"> -->
-<nav [ngClass]="{ sidebarPushRight: isActive }" class="sidebar" >
+<nav [ngClass]="{ sidebarPushRight: isActive }" class="sidebar">
 
   <div class="list-group">
 
     <div class="header-fields">
+
+      <a *ngIf="authService.isAuthenticated()" [routerLink]="['/store/carrito']" class="list-group-item">
+        <!-- <span><i class="fa fa-list-ul"></i>&nbsp; Carta</span> -->
+        <mat-icon [matBadge]="numArticulosCarrito" matBadgeColor="warn" [matBadgeHidden]="hiddenProductosEnCarrito">
+          shopping_cart</mat-icon>
+      </a>
+
       <a [routerLink]="['/dashboard']" class="list-group-item">
         <span><i class="fa fa-home"></i>&nbsp; Home</span>
       </a>
@@ -83,11 +90,7 @@
       </div>
       <!-- seleccion idioma-->
 
-      <a *ngIf="authService.isAuthenticated()" 
-         [routerLink]="['/store/carrito']" class="list-group-item">
-         <!-- <span><i class="fa fa-list-ul"></i>&nbsp; Carta</span> -->
-         <mat-icon [matBadge]= "numArticulosCarrito" matBadgeColor="warn" [matBadgeHidden]="hiddenProductosEnCarrito">shopping_cart</mat-icon>
-      </a>
+
       <!-- <a (click)="rltAndLtr()" class="list-group-item">
         <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
       </a> -->

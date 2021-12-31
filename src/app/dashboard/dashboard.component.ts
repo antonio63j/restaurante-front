@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.metaTagService.updateTag({
       name: 'description', content: `${this.empresa.nombre} tu restaurante en ${this.empresa.localidad} (${this.empresa.provincia}), \
 cocinamos con productos de primera calidad, principalmente de temporada, \
-elabora tu pedido online entre diferentes menús completos o platos, \
+elabora tu pedido online entre diferentes menús completos o a la carta, \
 es posible entregar los pedidos a domicilio o recogida en el propio restaurante`}, `name='description'`);
 
     this.canonicalService.updateCanonicalUrl(environment.domainUrl);
