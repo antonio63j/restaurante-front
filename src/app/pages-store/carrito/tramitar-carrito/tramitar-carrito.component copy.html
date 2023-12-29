@@ -1,0 +1,73 @@
+<div class="card contendor">
+  <div class="card-header color-modal-header">
+    <h3 style="text-align: center;">Tramitar carrito</h3>
+  </div>
+
+  <div class="card-body">
+    <div fxLayout="row wrap">
+
+
+      <mat-card class="center" fxFlex=calc(100%-80%) fxFlex.xs="100" fxFlexOrder.gt-xs="1">
+        <mat-form-field>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Día Entrega del pedido"
+            [(ngModel)]="chosenDate" (dateChange)="dateChanged()">
+          <mat-datepicker-toggle matSuffix [for]="picker">
+          </mat-datepicker-toggle>
+          <mat-datepicker touchUi="false" [dateClass]="dateClass" #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-card>
+
+      <mat-card class="center" fxFlex="calc(100%-80%)" fxFlex.xs="100" fxFlexOrder.gt-xs="2">
+        <mat-label style="font-size: 12px;">hora entrega del pedido</mat-label>
+        <ngx-timepicker-field [format]="24" [clockTheme]="oktTheme" (timeChanged)="timeChanged($event)"
+          [min]="minTime" [max]="maxTime" #myPickerRef [confirmBtnTmpl]="confirmBtn"
+
+          [(ngModel)]="chosenTime"
+          [cancelBtnTmpl]="cancelBtn" [disabled]="false">
+        </ngx-timepicker-field>
+
+        <ng-template #cancelBtn>
+          <button mat-stroked-button color="success" style="margin-right: 7px">{{'Cancelar'
+            | translate}}</button>
+        </ng-template>
+        <ng-template #confirmBtn>
+          <button mat-stroked-button color="success" style="margin-right: 7px">{{'Confirmar'
+            | translate}}</button>
+        </ng-template>
+
+      </mat-card>
+
+      <mat-card fxFlex="535px" fxFlex.xs="calc(100%-40%)" fxFlexOrder.gt-xs="3">
+        <mat-label style="font-size: 12px;">Adjuntar nota (máximo 300 carateres)</mat-label>
+        <textarea class="form-control" [(ngModel)]="nota" placeholder="Nota para el pedido" maxlength="300"></textarea>
+      </mat-card>
+
+      <mat-card class="center" fxFlex="calc(100%-15%)" fxFlex.xs="100" fxFlexOrder.gt-xs="4">
+
+        <!-- <button mat-stroked-button (click)="confirmar()" color="success" 
+          style="margin-right: 7px; margin-bottom: 7px;">{{'Confirmar'
+          | translate}}</button>
+        <button mat-stroked-button [routerLink]="['/store/carrito']" color="success"
+          style="margin-right: 7px">{{'Cancelar'
+          | translate}}</button> -->
+
+        <button mat-stroked-button (click)="confirmar()" color="success" 
+         >{{'Confirmar'
+          | translate}}</button>
+          &nbsp;
+        <button mat-stroked-button [routerLink]="['/store/carrito']" color="success"
+          >{{'Salir'
+          | translate}}</button>
+      </mat-card>
+
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <ul>
+       <li>Nuestro horario es de {{empresa.horaApertura}}h  a  {{empresa.horaCierre}}h</li>
+       <li>Tiempo mínimo de elavoración de un pedido: {{empresa.horasMinPreparacionPedido}} horas</li>
+       <li>Puede hacer su pedido con hasta {{empresa.diasMaxEntregaPedido}} días de adelanto</li>    
+    </ul>     
+  </div>
+</div>

@@ -1,0 +1,32 @@
+
+<div class="card contenedor">
+  <div class="card-header color-modal-header">
+    <h3 style="text-align: center;">Nuestra propuesta de menús</h3>
+  </div>
+  <div class="card-title">
+    <div *ngIf="!menus" class="alert alert-info">Esperando carga de menús</div>
+    <div *ngIf="menus?.length==0" class="alert alert-info"> Lista vacía
+    </div>
+  </div>
+
+  <div class="card-body row">
+    <div *ngFor="let menu of menus" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+      <mat-card appearance="outlined" style="margin-bottom: 30px;">
+        <mat-card-header>
+        </mat-card-header>
+        <img *ngIf="menu?.imgFileName" class="img-thumbnail"
+        (click)='comprar(menu)' style="cursor: pointer;"
+        src="{{host}}/api/menu/uploads/img/{{menu.imgFileName}}"
+        alt="comprar menú de nuestro restaurante">
+        <mat-card-content>
+          <p>{{menu.label | slice:0:37}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-stroked-button color="success" style="margin-right: 1px"
+            (click)='comprar(menu)'>{{'Entrar' |translate}}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
