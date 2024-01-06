@@ -18,12 +18,13 @@
         <a class="page-link" (click)="cargaPagina(paginador.totalPages-1)">&#x0226B;</a>
     </li>
     <li> 
-        <mat-form-field  class="my-select-panel-class">
-            <mat-select  [(value)]="sizePage" placeholder="Líneas" 
+        <mat-form-field  class="my-select-panel-class"> 
+            <mat-label>Líneas</mat-label>
+            <mat-select  [(value)]="sizePage" 
               panelClass="my-long-panel" (selectionChange)="selectedSize(sizePage)">
               <mat-option [value]="size" *ngFor="let size of sizes">{{ size }}</mat-option>
             </mat-select>
-        </mat-form-field>
+        </mat-form-field> 
   
         <mat-label class="my-select-panel-class">
             pagina {{paginador.number + 1}} de {{paginador.totalPages}}

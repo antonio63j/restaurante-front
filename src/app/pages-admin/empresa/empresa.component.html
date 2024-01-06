@@ -140,7 +140,7 @@
                   appearance="fill">
                     <mat-label>Día de descanso</mat-label>
                     <mat-select [(value)]="empresa.diasDescanso" multiple placeholder="día de descanso"
-                      panelClass="my-long-panel" (selectionChange)="cambioDiaDescanso(empresa.diasDescanso)">
+                      class="my-long-panel" (selectionChange)="cambioDiaDescanso(empresa.diasDescanso)">
                       <mat-option *ngFor="let dia of diasDescanso" [value]="dia">{{dia}}</mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -148,8 +148,10 @@
 
                 <div class="col-md-4">
                   <mat-form-field class="my-select-panel-class">
+                    <mat-label>Tiempo preparación pedido</mat-label>
+                    <mat-hint>en horas</mat-hint>
                     <mat-select [(value)]="empresa.horasMinPreparacionPedido"
-                      placeholder="Mínimo horas preparación pedido" panelClass="my-long-panel">
+                      placeholder="Mínimo horas preparación pedido" class="my-long-panel">
                       <mat-option [value]="cantidad" *ngFor="let cantidad of cantidades">{{ cantidad }}                  
                       </mat-option>
                     </mat-select>
@@ -158,8 +160,10 @@
 
                 <div class="col-md-4">
                   <mat-form-field class="my-select-panel-class">
+                    <mat-label>Anticipación del pedido</mat-label>
+                    <mat-hint>días antelación de entrega</mat-hint>
                     <mat-select [(value)]="empresa.diasMaxEntregaPedido" placeholder="Máximo dias entrega de pedido"
-                      panelClass="my-long-panel">
+                      class="my-long-panel">
                       <mat-option [value]="cantidad" *ngFor="let cantidad of cantidades">{{ cantidad }}
                       </mat-option>
                     </mat-select>
@@ -169,15 +173,15 @@
 
 
               <div class="row container">
-                <div class="col-md-6">
-                  <mat-label style="font-size: 12px;">hora Apertura</mat-label>
+                <div class="col-md-3">
+                  <mat-label class="cabecera-time">hora Apertura</mat-label>
                   <ngx-timepicker-field [format]="24" [clockTheme]="oktTheme" #myPickerRef [confirmBtnTmpl]="confirmBtn"
                     [(ngModel)]="empresa.horaApertura" name="apertura" [cancelBtnTmpl]="cancelBtn" [disabled]="false">
                   </ngx-timepicker-field>
                 </div>
 
-                <div class="col-md-6">
-                  <mat-label style="font-size: 12px;">hora Cierre</mat-label>
+                <div class="col-md-3">
+                  <mat-label class="cabecera-time">hora Cierre</mat-label>
                   <ngx-timepicker-field [format]="24" [clockTheme]="oktTheme" #myPickerRef [confirmBtnTmpl]="confirmBtn"
                     [(ngModel)]="empresa.horaCierre" name="cierre" [cancelBtnTmpl]="cancelBtn" [disabled]="false">
                   </ngx-timepicker-field>

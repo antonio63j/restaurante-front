@@ -148,7 +148,7 @@
                                               filtroSugerencia.order=="descripcion"'></div>
                     <div class="arrow-down" *ngIf='filtroSugerencia.direction=="desc" &&
                                               filtroSugerencia.order=="descripcion"'></div>
-                    descripcion
+                    descripción
                   </th>
 
                   <!-- <th *ngIf="authService.hasRole('ROLE_ADMIN')"><i class="fa fa-trash-o"></i></th> -->
@@ -165,14 +165,16 @@
                   </th>
                   <th>
                     <mat-form-field class="example-full-width">
-                      <input matInput class="form-control" name="label" placeholder="filtro" [disabled]="filterChecked"
+                      <input matInput name="label" [disabled]="filterChecked"
                         [(ngModel)]="filtroSugerencia.label" #label="ngModel" maxlength="80">
+                      <mat-icon matSuffix>search</mat-icon>  
+                      <mat-hint>busca dentro del nombre del producto</mat-hint>  
                     </mat-form-field>
                   </th>
                   <th style="width: 250px !important">
                     <mat-form-field>
                       <!-- <mat-label>Filtro grupo sugerencia</mat-label> -->
-                      <select matNativeControl class="form-control" id="tipoP" name="tipoP" [disabled]="filterChecked"
+                      <select matNativeControl id="tipoP" name="tipoP" [disabled]="filterChecked"
                         [(ngModel)]="filtroSugerencia.tipo" #tipoP="ngModel">
 
                         <option label="-- filtro grupo de tipos --"></option>
@@ -183,25 +185,29 @@
                     </mat-form-field>
                   </th>
 
-                  <th style="width: 250px !important">
-                    <mat-form-field style="width: 82px !important; margin-right: 6px;">
-                      <input matInput type="number" class="form-control" name="precioMin" placeholder="Precio min"
+                  <th style="width: 230px !important">
+                    <mat-form-field style="width: 105px !important; margin-right: 2px;">
+                      <mat-label>Mínimo</mat-label>
+                      <input matInput type="number"  name="precioMin"
                         [disabled]="filterChecked" [(ngModel)]="filtroSugerencia.precioMin" #precioMin="ngModel"
-                        maxlength="7">
+                        maxlength="5">
                     </mat-form-field>
 
-                    <mat-form-field style="width: 82px !important">
-                      <input matInput type="number" class="form-control" name="precioMax" placeholder="Precio max"
+                    <mat-form-field style="width: 105px !important">
+                      <mat-label>Máximo</mat-label>
+                      <input matInput type="number" name="precioMax" 
                         [disabled]="filterChecked" [(ngModel)]="filtroSugerencia.precioMax" #precioMax="ngModel"
-                        maxlength="7">
+                        maxlength="5">
                     </mat-form-field>
 
                   </th>
                   <th>
                     <mat-form-field class="example-full-width">
-                      <input matInput class="form-control" name="descripcion" placeholder="descripción"
+                      <input matInput name="descripcion" placeholder="descripción"
                         [disabled]="filterChecked" [(ngModel)]="filtroSugerencia.descripcion" #descripcion="ngModel"
                         maxlength="80">
+                        <mat-icon matSuffix>search</mat-icon> 
+                      <mat-hint>busca dentro de la descripción del producto</mat-hint>  
                     </mat-form-field>
                   </th>
 

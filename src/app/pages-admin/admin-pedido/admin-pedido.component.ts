@@ -115,16 +115,7 @@ export class AdminPedidoComponent implements OnInit, OnDestroy {
                 validations: [
                 ]
             },
-            {
-                type: 'select',
-                label: 'Estado',
-                name: 'estado',
-                value: null,
-                class: 'demo-15-width',
-                options: this.opcionesEstado,
-                validations: [
-                ]
-            },
+            
 
             {
                 type: 'daterange',
@@ -143,7 +134,7 @@ export class AdminPedidoComponent implements OnInit, OnDestroy {
                 label: 'Hora inicial entrega',
                 name: 'horaEntregaIni',
                 value: this.filtroPedido.horaEntregaIni,
-                class: 'demo-15-width margin-top',
+                class: 'demo-15-width',
                 validations: [
                 ]
             },
@@ -152,16 +143,28 @@ export class AdminPedidoComponent implements OnInit, OnDestroy {
                 label: 'Hora final entrega',
                 name: 'horaEntregaFin',
                 value: this.filtroPedido.horaEntregaFin,
-                class: 'demo-15-width margin-top',
+                class: 'demo-15-width',
                 validations: [
                 ]
             },
+
+            {
+                type: 'select',
+                label: 'Estado',
+                name: 'estado',
+                value: null,
+                class: 'demo-15-width-bajo',
+                options: this.opcionesEstado,
+                validations: [
+                ]
+            },
+
             {
                 type: 'select',
                 label: 'lugar Entrega',
                 name: 'lugarEntrega',
                 value: null,
-                class: 'demo-15-width',
+                class: 'demo-15-width-bajo',
                 options: this.opcionesEntrega,
                 validations: [
                 ]

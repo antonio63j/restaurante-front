@@ -130,7 +130,7 @@ export class CartaComponent implements OnInit, OnDestroy {
             {
                 type: 'input',
                 label: 'Precio mim.',
-                class: 'demo-10-width',
+                class: 'demo-precio-width',
                 inputType: 'number',
                 name: 'precioMin',
                 validations: [
@@ -139,7 +139,7 @@ export class CartaComponent implements OnInit, OnDestroy {
             {
                 type: 'input',
                 label: 'Precio max.',
-                class: 'demo-10-width',
+                class: 'demo-precio-width',
                 inputType: 'number',
                 name: 'precioMax',
                 validations: [

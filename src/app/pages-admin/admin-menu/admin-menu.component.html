@@ -13,7 +13,8 @@
   </div>
 
   <div class="card-body row">
-    <div *ngFor="let menu of menus" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+    @for(menu of menus; track menu.imgFileName) {
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
       <mat-card appearance="outlined" style="margin-bottom: 30px;">
         <mat-card-header>
           <!-- <img *ngIf="menu?.imgFileName" mat-card-avatar src="{{host}}/api/empresa/uploads/img/admin/menu_peque.png"> -->     
@@ -41,6 +42,7 @@
         </mat-card-actions>
       </mat-card>
     </div>
+    }
   </div>
 
 </div>

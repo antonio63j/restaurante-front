@@ -21,7 +21,15 @@ h1.titleText {
 }
 
  
-  ::ng-deep .my-long-panel {
-    background-color: $oxido-claro;
-    // max-height: 200px;
+  .my-long-panel {
+    // background-color: $oxido-claro;
+    // color: Red;
   }
+
+
+  .cabecera-time {
+    font-size: 14px !important;
+    margin-right: 7px !important;
+    margin-left: 20px !important;
+  }
+
