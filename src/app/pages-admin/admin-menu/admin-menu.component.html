@@ -27,18 +27,27 @@
           <!-- <p> precio: {{menu.precio}}</p> -->
           <p>{{menu.label | slice:0:37}}</p>
         </mat-card-content>
-        <mat-card-actions>
-
-          <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
-            (click)='update(menu)'>{{'Edit' |translate}}</button>
-          <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
-            [routerLink]="['/admin-index/admmenusugerencia', menu.id]">
-            {{'Platos' |translate}}
-          </button>
-          <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
-            (click)='create()'>{{'Create' |translate}}</button>
-          <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
-            (click)='delete(menu)'>{{'Delete' |translate}}</button>
+        <mat-card-actions class="grupo-botones">
+          <div class="row">
+            <div class="col">
+              <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
+                (click)='update(menu)'>{{'Edit' |translate}}</button>
+            </div>
+            <div class="col">
+              <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
+                [routerLink]="['/admin-index/admmenusugerencia', menu.id]">
+                {{'Platos' |translate}}
+              </button>
+            </div>
+            <div class="col">
+              <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
+                (click)='create()'>{{'Create' |translate}}</button>
+            </div>
+            <div class="col">
+              <button *ngIf="authService.hasRole('ROLE_ADMIN')" mat-button style="margin-right: 1px"
+                (click)='delete(menu)'>{{'Delete' |translate}}</button>
+            </div>
+          </div>
         </mat-card-actions>
       </mat-card>
     </div>

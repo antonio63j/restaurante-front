@@ -16,7 +16,8 @@
                     src="{{host}}/api/sugerencia/uploads/img/{{sugerencia.imgFileName}}"
                     alt="Sugerencia de la carta seleccionada">
                 <br>
-                <p class="color-modal-header" style="text-align: center;">Precio: {{sugerencia.precio | currency : 'EUR'}}</p>
+                <p class="color-modal-header" style="text-align: center;">Precio: {{sugerencia.precio | currency :
+                    'EUR'}}</p>
             </div>
         </div>
 
@@ -43,20 +44,18 @@
                 </a>
             </div>
             <br>
-            <div class="row">
+            <div class="grupo-botones">
                 <!-- <button *ngIf="authService.usuario.username" mat-button style="margin-right: 1px" (click)='aceptar()'>{{'Añadir al carro' |translate}}</button> -->
                 <div *ngIf="authService.usuario.username">
-                    <!-- <mat-icon matBadge="0" matBadgeColor="warn" [matBadgeHidden]="hidden">shopping_cart</mat-icon> -->
-                    <!-- <a  class="boton-bajo" style="margin-right: 1px" (click)='aceptar()'>{{'Añadir al carro' |translate}}</a> -->
-                    <button mat-stroked-button color="success" style="margin-right: 7px" (click)='aceptar(sugerencia)'>{{'Añadir al
-                        carro'
-                        |translate}}</button>
-
+                    <button mat-stroked-button color="success" style="margin-right: 7px"
+                        (click)='aceptar(sugerencia)'>{{'Añadir al carro' |translate}}
+                    </button>
                 </div>
-                <!-- <button mat-button style="margin-right: 1px" (click)="activeModal.close(true)">{{'Salir' |translate}}</button> -->
-                <button mat-stroked-button color="success" style="margin-right: 7px" (click)="activeModal.close(true)">{{'Salir'
-                    |translate}}</button>
-
+                <div>
+                    <button mat-stroked-button color="success" style="margin-right: 7px"
+                        (click)="activeModal.close(true)">{{'Salir'
+                        |translate}}</button>
+                </div>
             </div>
 
         </div>

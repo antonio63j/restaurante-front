@@ -1,9 +1,8 @@
 <div class="main-content">
   <div class="container-fluid">
-
     <div class="row">
       <!-- row para card con tabla platos y la tabla de seleccion -->
-      <div class="col-md-4" [ngClass]="{'my-disable': disableMS, 'my-invisible': invisibleMS}">
+      <div class="col-md-3" [ngClass]="{'my-disable': disableMS, 'my-invisible': invisibleMS}">
         <!-- col-md-4 para las tablas de platos -->
         <div class="card" *ngIf="menu">
           <!-- card para la tabla de platos -->
@@ -95,7 +94,7 @@
       <!-- +++++++++++++++++++ Tabla para la seleccion de sugerencias del menu ++++++++++++++++++++++ -->
       <!-- +++++++++++++++++++ Tabla para la seleccion de sugerencias del menu ++++++++++++++++++++++ -->
       <!-- +++++++++++++++++++ Tabla para la seleccion de sugerencias del menu ++++++++++++++++++++++ -->
-      <div class="col-md-8" *ngIf="sugerencias" [ngClass]="{'my-disable': disable}">
+      <div class="col-md-9" *ngIf="sugerencias" [ngClass]="{'my-disable': disable}">
         <!-- tabla para la seleccion de sugerencias -->
         <div class="card text-center" *ngIf="menu">
           <div class="card-header color-modal-header">
@@ -185,15 +184,15 @@
                     </mat-form-field>
                   </th>
 
-                  <th style="width: 230px !important">
-                    <mat-form-field style="width: 105px !important; margin-right: 2px;">
+                  <th style="width: 105px !important">
+                    <mat-form-field style="width: 100px !important; margin-right: 1px;">
                       <mat-label>Mínimo</mat-label>
                       <input matInput type="number"  name="precioMin"
                         [disabled]="filterChecked" [(ngModel)]="filtroSugerencia.precioMin" #precioMin="ngModel"
                         maxlength="5">
                     </mat-form-field>
 
-                    <mat-form-field style="width: 105px !important">
+                    <mat-form-field style="width: 100px !important">
                       <mat-label>Máximo</mat-label>
                       <input matInput type="number" name="precioMax" 
                         [disabled]="filterChecked" [(ngModel)]="filtroSugerencia.precioMax" #precioMax="ngModel"

@@ -136,8 +136,7 @@
 
               <div class="row container" style="text-align: center;">
                 <div class="col-md-4">
-                  <mat-form-field   class="my-select-panel-class" 
-                  appearance="fill">
+                  <mat-form-field appearance="fill">
                     <mat-label>Día de descanso</mat-label>
                     <mat-select [(value)]="empresa.diasDescanso" multiple placeholder="día de descanso"
                       class="my-long-panel" (selectionChange)="cambioDiaDescanso(empresa.diasDescanso)">
@@ -147,7 +146,7 @@
                 </div>
 
                 <div class="col-md-4">
-                  <mat-form-field class="my-select-panel-class">
+                  <mat-form-field>
                     <mat-label>Tiempo preparación pedido</mat-label>
                     <mat-hint>en horas</mat-hint>
                     <mat-select [(value)]="empresa.horasMinPreparacionPedido"
@@ -159,7 +158,7 @@
                 </div>
 
                 <div class="col-md-4">
-                  <mat-form-field class="my-select-panel-class">
+                  <mat-form-field>
                     <mat-label>Anticipación del pedido</mat-label>
                     <mat-hint>días antelación de entrega</mat-hint>
                     <mat-select [(value)]="empresa.diasMaxEntregaPedido" placeholder="Máximo dias entrega de pedido"

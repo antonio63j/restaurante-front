@@ -90,7 +90,7 @@ button.margin-right {
 }
 
 .ancho-select-cantidad {
-  width: 90px;
+  width: 105px;
 }
   
 // mat-button
@@ -129,3 +129,22 @@ button.margin-right {
 }
 
 // ^ Necesario para que se totalmente visible ngx-material-timepicker (móvil)
+
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+}
+
+.example-radio-button {
+  margin: 1px;
+  // padding-top: 5px;
+}
+
+.contenido-carrito-centrado {
+  width: 80%;
+  // margin: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
